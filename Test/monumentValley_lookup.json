@@ -1,0 +1,227 @@
+{
+  "results": {
+    "728293409": {
+      "artwork": {
+        "width": 1024,
+        "url": "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/14/8a/fc/148afc62-d949-0c3b-c7d9-f3206e548ea2/AppIcon-0-1x_U007emarketing-0-85-220-0-7.png/{w}x{h}bb.{f}",
+        "height": 1024,
+        "textColor3": "14362a",
+        "textColor2": "481513",
+        "textColor4": "39382e",
+        "hasAlpha": false,
+        "textColor1": "19120e",
+        "bgColor": "00c496",
+        "hasP3": false,
+        "supportsLayeredImage": false
+      },
+      "artistName": "ustwo games",
+      "hasMessagesExtension": true,
+      "url": "https://apps.apple.com/us/app/monument-valley/id728293409",
+      "shortUrl": "https://apps.apple.com/us/app/monument-valley/id728293409",
+      "softwareInfo": {
+        "supportUrl": "https://www.ustwogames.co.uk",
+        "privacyPolicyUrl": "https://www.iubenda.com/privacy-policy/8222064",
+        "eulaUrl": null,
+        "languagesDisplayString": "English, Dutch, French, German, Italian, Japanese, Korean, Malay, Portuguese, Russian, Simplified Chinese, Spanish, Swedish, Thai, Traditional Chinese, Turkish",
+        "privacyPolicyTextUrl": null,
+        "requirementsString": "Requires iOS 9.0 or later. Compatible with iPhone, iPad, and iPod touch.",
+        "hasInAppPurchases": true,
+        "seller": "ustwo Games Ltd",
+        "websiteUrl": "https://www.monumentvalleygame.com"
+      },
+      "hasPrimaryArtist": true,
+      "deviceFamilies": ["iphone", "ipad", "ipod"],
+      "genreNames": ["Games", "Adventure", "Puzzle", "Entertainment"],
+      "itunesNotes": {
+        "standard": "Mesmerizing from start to finish, Monument Valley offers a world of uncanny beauty and constant wonder. To help a princess proceed on her mysterious quest, you’ll face ingenious puzzles that involve lifting and spinning the environment in seemingly impossible ways. It’s a mind-bending journey filled with the joy of discovery, making Ustwo’s adventure a must-play for gamers of every experience level.",
+        "short": "Incredible architecture awaits",
+        "tagline": "Incredible architecture awaits"
+      },
+      "whatsNew": "Join Princess Ida this April in our special 5th Anniversary Edition, packed with birthday surprises!\n\nDon\u0027t miss out - the party\u0027s over on May 1st.",
+      "nameSortValue": "MonumentValley",
+      "id": "728293409",
+      "releaseDate": "2014-04-03",
+      "userRating": {
+        "value": 4.5,
+        "ratingCount": 29175,
+        "valueCurrentVersion": 4.5,
+        "ratingCountCurrentVersion": 4250
+      },
+      "editorialBadgeInfo": {
+        "editorialBadgeType": "editorialPriority",
+        "nameForDisplay": "Editors’ Choice"
+      },
+      "contentRatingsBySystem": {
+        "appsApple": { "name": "4+", "value": 100, "rank": 1 }
+      },
+      "name": "Monument Valley",
+      "uber": {
+        "backgroundColor": "254388",
+        "name": null,
+        "titleTextColor": "8ed1ff",
+        "primaryTextColor": "ffffff",
+        "masterArt": {
+          "width": 3200,
+          "url": "https://is5-ssl.mzstatic.com/image/thumb/Features69/v4/8a/aa/c6/8aaac6fe-a9eb-79df-0295-c596417ad457/source/{w}x{h}{c}.{f}",
+          "height": 600,
+          "textColor3": "d3d8e4",
+          "textColor2": "8ed2ff",
+          "textColor4": "78b4e4",
+          "hasAlpha": false,
+          "textColor1": "ffffff",
+          "bgColor": "243f7a",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        },
+        "headerTextColor": "8ed1ff",
+        "primaryTextColorOnBlack": "rgba(241,241,241,1.0)",
+        "titleTextColorOnBlack": "rgba(142,209,255,1.0)",
+        "description": null
+      },
+      "artistUrl": "https://apps.apple.com/us/developer/ustwo-games/id297468910",
+      "ovalArtwork": {
+        "width": 1024,
+        "url": "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/48/39/db/4839dbcc-6e30-6ad6-2b67-1924afbf9a99/iMessage_App_Icon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-181-0-0-0-0.png/{w}x{h}bb.{f}",
+        "height": 768,
+        "textColor3": "143629",
+        "textColor2": "3f1c10",
+        "textColor4": "323e2b",
+        "hasAlpha": false,
+        "textColor1": "19120e",
+        "bgColor": "00c597",
+        "hasP3": false,
+        "supportsLayeredImage": false
+      },
+      "nameRaw": "Monument Valley",
+      "editorialArtwork": {
+        "originalFlowcaseBrick": {
+          "width": 3200,
+          "url": "https://is3-ssl.mzstatic.com/image/thumb/Features7/v4/fd/41/02/fd4102ca-7ca6-cfee-9b15-b71db0f9a3e1/source/{w}x{h}{c}.{f}",
+          "height": 600,
+          "textColor3": "d3d8e4",
+          "textColor2": "8ed2ff",
+          "textColor4": "78b4e4",
+          "hasAlpha": false,
+          "textColor1": "ffffff",
+          "bgColor": "243f7a",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        },
+        "storeFlowcase": {
+          "width": 4320,
+          "url": "https://is2-ssl.mzstatic.com/image/thumb/Features122/v4/61/4e/69/614e6911-6051-f55b-0f28-6497e4e973e9/source/{w}x{h}{c}.{f}",
+          "height": 1080,
+          "textColor3": "2e3d38",
+          "textColor2": "1c2a37",
+          "textColor4": "2b4b53",
+          "hasAlpha": false,
+          "textColor1": "211914",
+          "bgColor": "63ccc5",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        },
+        "subscriptionHero": {
+          "width": 4320,
+          "url": "https://is4-ssl.mzstatic.com/image/thumb/Features114/v4/f3/95/bb/f395bb99-22c9-4f36-3b84-6a719342070b/source/{w}x{h}{c}.{f}",
+          "height": 1080,
+          "textColor3": "1e201f",
+          "textColor2": "040404",
+          "textColor4": "1f2020",
+          "hasAlpha": false,
+          "textColor1": "030304",
+          "bgColor": "8d948e",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        },
+        "bannerUber": {
+          "width": 4320,
+          "url": "https://is4-ssl.mzstatic.com/image/thumb/Features117/v4/0b/8e/1a/0b8e1abe-1a3f-4a59-6778-8945415dcc1c/source/{w}x{h}{c}.{f}",
+          "height": 1080,
+          "textColor3": "d7d8e4",
+          "textColor2": "eeffff",
+          "textColor4": "c9d8e4",
+          "hasAlpha": false,
+          "textColor1": "ffffff",
+          "bgColor": "3a3d7a",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        },
+        "brandLogo": {
+          "width": 1080,
+          "url": "https://is4-ssl.mzstatic.com/image/thumb/Features113/v4/e2/1f/aa/e21faa3a-dc1b-66f5-b8cd-6716fe0e8aa7/source/{w}x{h}{c}.{f}",
+          "height": 1080,
+          "textColor3": "c1c1c1",
+          "textColor2": "e5e5e5",
+          "textColor4": "b7b7b7",
+          "hasAlpha": true,
+          "textColor1": "f2f2f2",
+          "bgColor": "000000",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        }
+      },
+      "subtitle": "A Quest for Forgiveness",
+      "bundleId": "com.ustwo.monumentvalley",
+      "isVppDeviceBasedLicensingEnabled": true,
+      "hasInAppPurchases": true,
+      "kind": "iosSoftware",
+      "copyright": "© 2014 ustwo Games Ltd",
+      "latestVersionReleaseDate": "Apr 2, 2019",
+      "artistId": "297468910",
+      "genres": [
+        {
+          "genreId": "6014",
+          "name": "Games",
+          "url": "https://itunes.apple.com/us/genre/id6014",
+          "mediaType": "8"
+        },
+        {
+          "genreId": "7002",
+          "name": "Adventure",
+          "url": "https://itunes.apple.com/us/genre/id7002",
+          "mediaType": "8"
+        },
+        {
+          "genreId": "7012",
+          "name": "Puzzle",
+          "url": "https://itunes.apple.com/us/genre/id7012",
+          "mediaType": "8"
+        },
+        {
+          "genreId": "6016",
+          "name": "Entertainment",
+          "url": "https://itunes.apple.com/us/genre/id6016",
+          "mediaType": "8"
+        }
+      ],
+      "minimumOSVersion": "9.0",
+      "description": {
+        "standard": "** Apple Game of the Year 2014 **\n** Winner of Apple Design Award 2014 **\n\nIn Monument Valley you will manipulate impossible architecture and guide a silent princess through a stunningly beautiful world.\n\nMonument Valley is a surreal exploration through fantastical architecture and impossible geometry. Guide the silent princess Ida through mysterious monuments, uncovering hidden paths, unfolding optical illusions and outsmarting the enigmatic Crow People.\n\nIda\u0027s Dream now available.\n\nForgotten Shores: Eight new chapters of adventure and illusion available now as a separate purchase.\n\nBuy or download Monument Valley now and you’ll also get our fully animated iMessage sticker pack, including 5 stickers exclusive to players! Only available on iOS10 and above.\n\n=======\n\n\"This might be the most beautiful iPad game of 2014\"  - Wired\n\n\"Brilliant design... stayed with me like a dream I didn\u0027t want to forget\"  9/10 - Polygon\n\n\"The most sublime hour my iPad has ever given me... and the value of such a thing is incalculable\" - Kotaku\n\n\"Monument Valley stuns with its serenity... each screen is a work of art\" - Huffington Post\n\n\"Almost impossibly gorgeous... a feast for your senses\" 5/5 - Touch Arcade\n\n=======\n\nBEAUTIFUL\n\nInspired by minimalist 3D design, optical illusions and palaces and temples from around the world, every monument is a unique, hand-crafted world to explore.\n\nEASY TO USE\n\nTwist and drag to reshape the world and help Ida to explore. Designed to be easy for everyone to pick up, enjoy and complete.\n\nSOUND\n\nAudio reacts to your manipulation of the world to provide a surreal and beautiful soundscape. Best experienced with headphones.\n\niCloud\n\nSynchronize your game across all your devices.\n\n** Monument Valley is designed for iPhone 4 and above. It is NOT compatible with iPod Touch 4th Generation."
+      },
+      "requiredCapabilities": "gamekit armv7 ",
+      "offers": [
+        {
+          "actionText": {
+            "short": "Buy",
+            "medium": "Buy",
+            "long": "Buy App",
+            "downloaded": "Installed",
+            "downloading": "Installing"
+          },
+          "type": "buy",
+          "priceFormatted": "$3.99",
+          "price": 3.99,
+          "buyParams": "productType=C\u0026price=3990\u0026salableAdamId=728293409\u0026pricingParameters=STDQ\u0026pg=default\u0026marketType=ENT\u0026appExtVrsId=830750189",
+          "version": { "display": "2.7.6", "externalId": 830750189 },
+          "assets": [{ "flavor": "iosSoftware", "size": 700106752 }]
+        }
+      ]
+    }
+  },
+  "version": 2,
+  "isAuthenticated": false,
+  "meta": {
+    "storefront": { "id": "143441", "cc": "US" },
+    "language": { "tag": "en-us" }
+  }
+}

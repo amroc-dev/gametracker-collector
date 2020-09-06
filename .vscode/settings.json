@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+        "__pycache__": true,
+        "Out_Mira": true,
+        "Out_Rigel": true,
+    }
+}

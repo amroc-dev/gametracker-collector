@@ -20,7 +20,7 @@ class Logger:
         self.color = color
 
     def log(self, body):
-        print(colored.fg(self.color) + self.header + "\t  " + body + colored.attr('reset'))
+        print(colored.fg(self.color) + self.header + "   \t" + body + colored.attr('reset'))
 
     def highlight(self, str):
         return (colored.attr('underlined') + str + colored.attr('res_underlined'))

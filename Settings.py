@@ -65,7 +65,7 @@ class MiraSettings:
 
     # amount of seconds between each main api call (apple specifies that you shouldn't go over 20 a minute)
     def MIN_SEARCH_TIME(self):
-        return 5
+        return 6
 
     # minimum amount of ratings app must have to be considered
     def MIN_RATINGS(self):
@@ -94,7 +94,7 @@ class RigelSettings:
 
     # amount of seconds between each main api call (apple specifies that you shouldn't go over 20 a minute)
     def MIN_SEARCH_TIME(self):
-        return 4
+        return 5
 
     def MIRA_OUT_SCAN_TIME(self):
         return 1
