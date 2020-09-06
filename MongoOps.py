@@ -8,6 +8,7 @@ from Settings import mongoSettings
 from Settings import miraSettings
 from Settings import rigelSettings
 import Helpers
+import json
 from pprint import pprint
 
 def setupTagsIndex():
@@ -46,27 +47,6 @@ def showTagsByPopularity():
 
     print("")
 
-    # fileName = Helpers.getWithExtension("steamTags", miraSettings.TERMS_EXTENSION())
-    # fullPath = miraSettings.TERMS_DIR() + "/" + str(fileName)
-    # termsList = []
-    # if path.exists(fullPath):
-    #     with open(fullPath, encoding='utf-8') as f:
-    #         for line in f:
-    #             if not line.startswith("#"):
-    #                 term = line.replace("\n", "").lower()
-    #                 if term not in termsList:
-    #                     termsList.append(term)
-
-    # for term in termsList:
-    #     termFound = False
-    #     for item in listofTuples:
-    #         if str(item[0]) == term:
-    #             termFound = True
-    #             break
-        
-    #     if not termFound:
-    #         print("Not found: " + term)
-
 def showGamesByPopularity():
     results = collection.find({})
     reivewPairs = {}
@@ -97,9 +77,10 @@ def showGamesByReleaseDate():
         print(str(num) + " : " + str(item))
         num += 1
 
-def testWrite():
-    logger.log("testWrite")
-    num = 0
+def bigBlobTestWrite():
+    with open('Test/BigBlob.json', encoding='utf-8') as json_file:
+        bigBlog = json.load(json_file)
+        collection.insert_one(bigBlog[0]) 
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoSetupIndexes", Helpers.mongoLogColor)
@@ -118,7 +99,7 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    testWrite()
+    bigBlobTestWrite()
     #setupTagsIndex()
     # showTagsByPopularity()
     #showGamesByPopularity()

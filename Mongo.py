@@ -57,32 +57,27 @@ class Mongo:
             try:
                 results = mongo.collection.bulk_write(bulkUpdates)
                 logger.log("Databased updated. Added: " + str(results.upserted_count) +
-                       ", modified: " + str(results.modified_count - results.upserted_count))
+                       ", modified: " + str(results.modified_count))
             except pymongo.errors.PyMongoError as e:
                 logger.log("bulk_write error: " + str(e))
         os.remove(fullPath)
 
     def addEntryToBulkUpdates(self, result, bulkUpdatesArray):
-        trackId = bson.int64.Int64(result[rigelSettings.KEY_trackId()])
-        trackName = result[rigelSettings.KEY_trackName()]
-        artistName = result[rigelSettings.KEY_artistName()]
-        userRating = result[rigelSettings.KEY_userRating()]
-        deviceFamilies = result[rigelSettings.KEY_deviceFamilies()]
-        releaseDate = result[rigelSettings.KEY_releaseDate()]
+        tags = result[rigelSettings.GAMEKEY_tags()]
+        searchBlob = result[rigelSettings.KEY_searchBlob()]
+        lookupBlob = result[rigelSettings.KEY_lookupBlob()]
+        trackId = bson.int64.Int64(searchBlob[rigelSettings.KEY_trackId()])
+        trackName = searchBlob[rigelSettings.KEY_trackName()]
+
         data = {
-            rigelSettings.KEY_trackName(): trackName,
-            rigelSettings.KEY_artistName(): artistName,
-            rigelSettings.KEY_userRating(): userRating,
-            rigelSettings.KEY_deviceFamilies(): deviceFamilies,
-            rigelSettings.KEY_releaseDate(): releaseDate,
+            rigelSettings.KEY_trackName() : trackName,
+            rigelSettings.GAMEKEY_tags() : tags,
+            rigelSettings.KEY_searchBlob() : searchBlob,
+            rigelSettings.KEY_lookupBlob() : lookupBlob,
         }
+
         bulkUpdatesArray.append(pymongo.UpdateOne(
             {'_id': trackId}, {'$set': data}, upsert=True))
-        tagList = result[rigelSettings.GAMEKEY_tags()]
-        addToSetData = {"tags": {'$each': tagList}}
-        bulkUpdatesArray.append(pymongo.UpdateOne(
-            {'_id': trackId}, {'$addToSet': addToSetData}, upsert=True))
-
 
 if __name__ == '__main__':
     logger = Helpers.Logger("Mongo", Helpers.mongoLogColor)

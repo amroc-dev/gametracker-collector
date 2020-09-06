@@ -57,8 +57,8 @@ class MiraSettings:
     def MIRA_KEY_term(self):
         return "term"
 
-    def MIRA_KEY_trackIds(self):
-        return "trackIds"
+    def MIRA_KEY_appleSearchBlobs(self):
+        return "appleSearchBlobs"
 
     def searchURL_base(self):
         return 'https://itunes.apple.com/search?term=__TERM__&entity=software&genreId=6014&limit=__LIMIT__&offset=__OFFSET__'
@@ -111,6 +111,15 @@ class RigelSettings:
     def RESULTS_FILENAME_EXTENSION(self):
         return miraSettings.RESULTS_FILENAME_EXTENSION()
 
+    def KEY_searchTerm(self):
+        return "serchTerm"
+
+    def KEY_searchBlob(self):
+        return "searchBlob"
+
+    def KEY_lookupBlob(self):
+        return "lookupBlob"
+
     def KEY_results(self):
         return "results"
 
@@ -132,14 +141,14 @@ class RigelSettings:
     def MIN_RATINGS(self):
         return miraSettings.MIN_RATINGS()
 
-    def KEY_artistName(self):
-        return "artistName"
+    # def KEY_artistName(self):
+    #     return "artistName"
 
-    def KEY_deviceFamilies(self):
-        return "deviceFamilies"
+    # def KEY_deviceFamilies(self):
+    #     return "deviceFamilies"
 
-    def KEY_releaseDate(self):
-        return "releaseDate"
+    # def KEY_releaseDate(self):
+    #     return "releaseDate"
 
     def KEY_trackId(self):
         return miraSettings.KEY_trackId()
@@ -153,25 +162,27 @@ class RigelSettings:
     def KEY_genres_name(self):
         return "name"
 
-    def appStoreGameGenres(self):
-        return (    'action', \
-                    'adventure', \
-                    'arcade', \
-                    'board', \
-                    'card', \
-                    'casino', \
-                    'dice', \
-                    'education', \
-                    'family', \
-                    'music', \
-                    'puzzle', \
-                    'racing', \
-                    'role playing', \
-                    'simulation', \
-                    'sports', \
-                    'strategy', \
-                    'trivia', \
-                    'word')
+    # def appStoreGameGenres(self):
+    #     return (    'action', \
+    #                 'adventure', \
+    #                 'ar games', \
+    #                 'arcade', \
+    #                 'board', \
+    #                 'card', \
+    #                 'casino', \
+    #                 'casual', \
+    #                 'dice', \
+    #                 'education', \
+    #                 'family', \
+    #                 'music', \
+    #                 'puzzle', \
+    #                 'racing', \
+    #                 'role playing', \
+    #                 'simulation', \
+    #                 'sports', \
+    #                 'strategy', \
+    #                 'trivia', \
+    #                 'word')
 
 
     # GAMEKEY refers to keys used in the output file, and also the database document

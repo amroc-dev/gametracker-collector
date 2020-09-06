@@ -57,33 +57,29 @@ class Rigel:
 
         return hasInApp
 
-    # collect the apple genres and the search term into one list
-    def getGenreList(self, metaResult, searchTerm):
+    # # collect the apple genres and the search term into one list
+    def getGenreList(self, searchTerm, lookupBlob):
         genreList = []
         genreList.append(searchTerm.lower())
-        genres = metaResult[rigelSettings.KEY_genres()]
+        genres = lookupBlob[rigelSettings.KEY_genres()]
         if genres:
             for genreEntry in genres:
                 genreName = genreEntry[rigelSettings.KEY_genres_name()].lower()
                 if genreName == "games":
                     continue
-                if genreName not in rigelSettings.appStoreGameGenres():
-                    continue
+                # if genreName not in rigelSettings.appStoreGameGenres():
+                #     continue
                 if genreName not in genreList:
                     genreList.append(genreName)
 
         return genreList
-    
-    def MakeAppEntry(self, trackID, trackName, artistName, userRating, deviceFamilies, releaseDate, tags):
-        app = {}
-        app[rigelSettings.KEY_trackId()] = trackID
-        app[rigelSettings.KEY_trackName()] = trackName
-        app[rigelSettings.KEY_artistName()] = artistName
-        app[rigelSettings.KEY_userRating()] = userRating[0]
-        app[rigelSettings.KEY_deviceFamilies()] = deviceFamilies
-        app[rigelSettings.KEY_releaseDate()] = releaseDate
-        app[rigelSettings.GAMEKEY_tags()] = tags
-        return app
+
+    def makeAppEntry(self, searchTerm, searchBlob, lookupBlob):
+        appEntry = {}
+        appEntry[rigelSettings.GAMEKEY_tags()] = self.getGenreList(searchTerm, lookupBlob)
+        appEntry[rigelSettings.KEY_searchBlob()] = searchBlob
+        appEntry[rigelSettings.KEY_lookupBlob()] = lookupBlob
+        return appEntry
 
     def dumpResults(self, appEntries):
         if len(appEntries) > 0:
@@ -94,11 +90,15 @@ class Rigel:
 
             fileName = rigelSettings.RESULTS_FILENAME() + "_" + uniqueID + rigelSettings.RESULTS_FILENAME_EXTENSION()
             os.rename(tempPath, rigelSettings.OUTPUT_DIR() + "/" + fileName)
-            # logger.log("File dump: " + fileName)
 
     def doMetaLookup(self, miraResults):
         searchTerm = miraResults[miraSettings.MIRA_KEY_term()]
-        trackIds = miraResults[miraSettings.MIRA_KEY_trackIds()]
+        trackIds = []
+        
+        allBlobs = miraResults[miraSettings.MIRA_KEY_appleSearchBlobs()]
+        for blob in allBlobs:
+            trackId = blob[miraSettings.KEY_trackId()]
+            trackIds.append(trackId)
 
         # format the list into a comma seperated string, which the request API requires
         trackIdRequestList = ""
@@ -115,7 +115,6 @@ class Rigel:
 
         appEntries = []
         resultCount = 0
-        inAppCount = 0
         lowReviewCount = 0
 
         if lookupResponse.ok:
@@ -132,17 +131,7 @@ class Rigel:
                 trackId = metaResult[rigelSettings.KEY_id()]
                 trackName = metaResult[rigelSettings.KEY_name()]
 
-                # with open("TestOut.txt", "a") as file_object:
-                #     testEntry = {}
-                #     hasIap = True if self.hasInAppPurchases(metaResult) else False
-                #     testEntry["term"] = searchTerm
-                #     testEntry["iap"] = hasIap
-                #     testEntry["trackId"] = trackId
-                #     testEntry["trackName"] = trackName
-                #     json.dump(testEntry, file_object, indent=4, ensure_ascii=False)
-
                 if self.hasInAppPurchases(metaResult):
-                    inAppCount += 1
                     continue
 
                 userRating = nested_lookup(key = rigelSettings.KEY_userRating(), document = metaResult)
@@ -153,19 +142,15 @@ class Rigel:
                     lowReviewCount += 1
                     continue
 
-                artistName = metaResult[rigelSettings.KEY_artistName()]
-                deviceFamilies = metaResult[rigelSettings.KEY_deviceFamilies()]
-                releaseDate = metaResult[rigelSettings.KEY_releaseDate()]
-                
-                genreList = self.getGenreList(metaResult, searchTerm)
-
-                appEntries.append(self.MakeAppEntry(trackId, trackName, artistName, userRating, deviceFamilies, releaseDate, genreList))
+                searchBlob = None
+                for blob in allBlobs:
+                    if str(blob[miraSettings.KEY_trackId()]) == str(trackId):
+                        searchBlob = blob
+                        break
+           
+                appEntries.append(self.makeAppEntry(searchTerm, searchBlob, metaResult))
             
             logger.log("Matches: " + str(len(appEntries)))
-
-            # for entry in appEntries:
-            #     logger.log("+ " + entry[rigelSettings.KEY_trackName()])
-            
             return appEntries
 
         else:
@@ -183,6 +168,5 @@ if __name__ == '__main__':
 
     if not os.path.exists(rigelSettings.OUTPUT_DIR()):
          os.makedirs(rigelSettings.OUTPUT_DIR())
-
 
     Rigel().run()

@@ -22,14 +22,24 @@ from filelock import Timeout, FileLock
 class Mira:
     def __init__(self):
         self.prepareForNewTerm()
-        self.trackIds = []
+        self.matchedResults = []
         self.sleeper = Helpers.Sleeper(miraSettings.MIN_SEARCH_TIME())
 
-    def addTrackId(self, trackId):
-        if trackId not in self.trackIds:
-            self.trackIds.append(trackId)
+    def matchedResultInBuffer(self, match):
+        trackID = match[miraSettings.KEY_trackId()]
+        inBuffer = False
+        for existingMatch in self.matchedResults:
+            if trackID == existingMatch[miraSettings.KEY_trackId()]:
+                inBuffer = True
+                break
+        
+        return inBuffer
 
-        if len(self.trackIds) == miraSettings.RESULTS_FILE_DUMP_COUNT():
+    def addMatchedResult(self, newMatch):
+        if self.matchedResultInBuffer(newMatch) == False:
+            self.matchedResults.append(newMatch)
+
+        if len(self.matchedResults) == miraSettings.RESULTS_FILE_DUMP_COUNT():
              self.dumpResults()
 
     def moveToNextTerm(self):
@@ -68,14 +78,14 @@ class Mira:
                 break
 
     def dumpResults(self):
-        if len(self.trackIds) == 0:
+        if len(self.matchedResults) == 0:
             return False
 
         self.waitForRigelIfNecessary()
 
         data = {}
         data[miraSettings.MIRA_KEY_term()] = saveFile.currentTerm
-        data[miraSettings.MIRA_KEY_trackIds()] = self.trackIds
+        data[miraSettings.MIRA_KEY_appleSearchBlobs()] = self.matchedResults
 
         uniqueID = str(uuid.uuid1().hex)
         tempPath = miraSettings.OUTPUT_DIR() + "/" + miraSettings.RESULTS_TEMP_FILENAME() + "_" + uniqueID + miraSettings.RESULTS_FILENAME_EXTENSION()
@@ -86,7 +96,7 @@ class Mira:
         os.rename(tempPath, miraSettings.OUTPUT_DIR() + "/" + fileName)
         # logger.log("*File dump*")#: " + fileName)
 
-        self.trackIds.clear()
+        self.matchedResults.clear()
 
     def doSearch(self):
         if saveFile.currentTerm == None:
@@ -133,7 +143,7 @@ class Mira:
                 logger.log("Too few results (<" + str(miraSettings.MIN_RESULTS()) + "), moving on...")
                 return False
 
-            matches = []
+            matchedResults = []
             for result in results:
                 self.offset += 1
 
@@ -147,14 +157,12 @@ class Mira:
                     if result[miraSettings.KEY_userRatingCount()] < miraSettings.MIN_RATINGS():
                         continue
 
-                trackId = result[miraSettings.KEY_trackId()]
-                if trackId not in matches:
-                    matches.append(trackId)
+                matchedResults.append(result)
             
             # check and report if app is new, ie it hasn't already been picked up in the search since the last file dump
             addedAppsCount = 0
-            for match in matches:
-                if match not in self.trackIds:
+            for match in matchedResults:
+                if not self.matchedResultInBuffer(match):
                     addedAppsCount += 1
 
             logger.log("Matches: " + str(addedAppsCount))
@@ -166,13 +174,13 @@ class Mira:
                 logger.log("Exhaust progress: " +  Helpers.makeProgressBar(norm, miraSettings.EXHAUSTED_SEARCH_COUNT()))
             else:
                 self.exhaustedSearchCount = miraSettings.EXHAUSTED_SEARCH_COUNT()
-                progressNorm = float(len(self.trackIds) + addedAppsCount) / float(miraSettings.RESULTS_FILE_DUMP_COUNT())
+                progressNorm = float(len(self.matchedResults) + addedAppsCount) / float(miraSettings.RESULTS_FILE_DUMP_COUNT())
                 if progressNorm > 1:
                     progressNorm = 1
                 logger.log("Buffer: " + Helpers.makeProgressBar(progressNorm, miraSettings.RESULTS_FILE_DUMP_COUNT()))
 
-            for match in matches:
-                self.addTrackId(match)
+            for match in matchedResults:
+                self.addMatchedResult(match)
         else:
             logger.log("Search request failed with status code:" + str(response.status_code))
 
