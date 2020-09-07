@@ -69,7 +69,7 @@ class MiraSettings:
 
     # minimum amount of ratings app must have to be considered
     def MIN_RATINGS(self):
-        return 0
+        return 5
 
     # if this many consecutive searches results in no new apps, then move to next term
     def EXHAUSTED_SEARCH_COUNT(self):
