@@ -97,24 +97,27 @@ def bigBlobTestWrite():
 def overwriteTest():
 
     bulkUpdates = []
-    tags = ["fun", "stuff", "yeah"]
+    tags = ["balls", "indie", "hurrah"]
 
     dataTest = {
         "one" : "one",
-        "two" : "three",
+    }
+
+    groupUpdate = {
+        '$set': dataTest,
+        '$addToSet': {"tags" : { "$each" : tags }}
     }
 
     bulkUpdates.append(pymongo.UpdateOne(
-            {'_id': 123}, {'$set': dataTest}, upsert=True)
+            {'_id': 123}, groupUpdate, upsert=True)
         )
 
-    for tag in tags:
-        bulkUpdates.append(pymongo.UpdateOne(
-            {'_id': 123}, 
-            {'$addToSet': {"tags" : tag}}, 
-            upsert=True)
-        )
-
+    # bulkUpdates.append(pymongo.UpdateOne(
+    #     {'_id': 123}, 
+    #     {'$addToSet': {"tags" : { "$each" : tags }}}, 
+    #     upsert=True)
+    # )
+        
     try:
         results = collection.bulk_write(bulkUpdates)
         logger.log("Databased updated. Added: " + str(results.upserted_count) + ", modified: " + str(results.modified_count))
@@ -140,7 +143,7 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    # overwriteTest()
+    overwriteTest()
     # setupTagsIndex()
     # showTagsByPopularity()
     # showGamesByPopularity()
