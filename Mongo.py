@@ -63,9 +63,9 @@ class Mongo:
         os.remove(fullPath)
 
     def addEntryToBulkUpdates(self, result, bulkUpdatesArray):
-        trackName = searchBlob[rigelSettings.KEY_trackName()]
         searchBlob = result[rigelSettings.KEY_searchBlob()]
         lookupBlob = result[rigelSettings.KEY_lookupBlob()]
+        trackName = searchBlob[rigelSettings.KEY_trackName()]
 
         data = {
             rigelSettings.KEY_trackName() : trackName,
