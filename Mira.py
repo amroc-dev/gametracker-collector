@@ -1,3 +1,11 @@
+#######################################################################
+# Mira
+# Step 1 in Mira -> Rigel -> Mongo chain
+# Traverses through all specified search term, and uses Apple search API to return matches
+# results are saved to Mira_OUT folder
+#######################################################################
+
+
 import time
 import os
 import os.path

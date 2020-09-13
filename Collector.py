@@ -1,3 +1,8 @@
+#######################################################################
+# Collector
+# Process to run Mira, Rigel and Mongo in same terminal
+#######################################################################
+
 import os
 import os.path
 from os import path

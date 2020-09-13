@@ -61,4 +61,5 @@ def makeProgressBar(normVal, pips = 20):
 miraLogColor = "cyan_1"
 rigelLogColor = "orange_1"
 mongoLogColor = "light_magenta"
+mongoValidatorLogColor = "chartreuse_1"
 

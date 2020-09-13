@@ -1,3 +1,9 @@
+#######################################################################
+# Mongo
+# Step 3 in Mira -> Rigel -> Mongo chain
+# Collects results from Rigel_OUT folder, and updates the database
+#######################################################################
+
 import os
 import os.path
 from os import path
@@ -15,7 +21,6 @@ from Settings import mongoSettings
 import Helpers
 import colored
 import datetime
-
 
 class Mongo:
     def __init__(self):

@@ -1,3 +1,9 @@
+#######################################################################
+# Mongo Ops
+# Just a collection of tests/useful database operations
+#######################################################################
+
+
 import os
 from os import path
 import sys
@@ -7,6 +13,7 @@ from pymongo import MongoClient
 from Settings import mongoSettings
 from Settings import miraSettings
 from Settings import rigelSettings
+from datetime import datetime
 import Helpers
 import json
 from pprint import pprint
@@ -93,6 +100,14 @@ def bigBlobTestWrite():
         bigBlog = json.load(json_file)
         collection.insert_one(bigBlog[0])
 
+def deleteEntireCollecion():
+    val = input("Delete entire collection? -> " + mongoSettings.COLLECTION_NAME() + " (type YES): ")
+    if str(val).lower() == "yes":
+        collection.delete_many({})
+        print("Delete successful")
+    else:
+        print("Cancelled") 
+
 
 def overwriteTest():
 
@@ -124,7 +139,16 @@ def overwriteTest():
     except pymongo.errors.PyMongoError as e:
         logger.log("bulk_write error: " + str(e))
 
+def overwriteTest2():
+    bulkUpdatesArray = []
+    dateNow = str(datetime.now())
+    updateData = { "dateValidated" : dateNow }
 
+    bulkUpdatesArray.append(pymongo.UpdateOne(
+        {'_id': 284653044}, {'$set': updateData}, upsert=True)
+    )
+
+    collection.bulk_write(bulkUpdatesArray)
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoSetupIndexes", Helpers.mongoLogColor)
@@ -143,10 +167,11 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    overwriteTest()
+    #overwriteTest()
     # setupTagsIndex()
-    # showTagsByPopularity()
+    #showTagsByPopularity()
     # showGamesByPopularity()
     # showGamesByReleaseDate()
+    overwriteTest2()
 
     sys.exit(1)

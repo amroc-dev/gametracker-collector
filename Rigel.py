@@ -1,3 +1,12 @@
+#######################################################################
+# Rigel
+# Step 2 in Mira -> Rigel -> Mongo chain
+# Collects results from Mira_OUT folder, then performs an Apple Api Lookup request
+# This returns other essential information (particularly whether the app has in app purchases or not)
+# Apps which pass this stage are saved to Rigel_OUT
+#######################################################################
+
+
 import time
 import os
 import os.path

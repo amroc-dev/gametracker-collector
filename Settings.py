@@ -208,3 +208,16 @@ class MongoSettings:
         return "Games"
 
 mongoSettings = MongoSettings()
+
+class MongoValidatorSettings:
+
+    def UPDATE_INTERVAL(self):
+        return 5
+
+    def LOOKUP_COUNT(self):
+        return 75
+
+    def KEY_dateValidated(self):
+        return "dateValidated"
+
+mongoValidatorSettings = MongoValidatorSettings()
