@@ -61,7 +61,6 @@ class Rigel:
             if False in inAppResults:
                 hasInApp = False
         elif inAppResults is bool:
-            print("BOOL! " + inAppResults)
             hasInApp = inAppResults
 
         return hasInApp

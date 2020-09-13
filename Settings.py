@@ -207,6 +207,10 @@ class MongoSettings:
     def COLLECTION_NAME(self):
         return "Games"
 
+    
+    def COLLECTION_META_NAME(self):
+        return "Games_meta"
+
 mongoSettings = MongoSettings()
 
 class MongoValidatorSettings:
