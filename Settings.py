@@ -225,3 +225,13 @@ class MongoValidatorSettings:
         return "dateValidated"
 
 mongoValidatorSettings = MongoValidatorSettings()
+
+class MongoIndexNames:
+    
+    def TRACKNAME_SELLER(self):
+        return "trackName_sellerName_textIndex"
+
+    def TAGS(self):
+        return "tags_index"
+
+mongoIndexNames = MongoIndexNames()
