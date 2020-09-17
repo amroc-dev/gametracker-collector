@@ -162,7 +162,10 @@ class RigelSettings:
     def KEY_genres_name(self):
         return "name"
 
+
     def ignoreGenres(self):
+        
+        # enter these lower case
         return [
             'entertainment'
         ]

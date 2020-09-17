@@ -75,7 +75,7 @@ class Rigel:
                 genreName = genreEntry[rigelSettings.KEY_genres_name()]
                 if genreName == "games":
                     continue
-                if genreName in rigelSettings.ignoreGenres():
+                if genreName.lower() in rigelSettings.ignoreGenres():
                     continue
                 if genreName not in genreList:
                     genreList.append(genreName)
