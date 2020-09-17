@@ -167,7 +167,8 @@ class RigelSettings:
         
         # enter these lower case
         return [
-            'entertainment'
+            'entertainment',
+            'games'
         ]
 
     # def appStoreGameGenres(self):
