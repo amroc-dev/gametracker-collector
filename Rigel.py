@@ -68,15 +68,15 @@ class Rigel:
     # # collect the apple genres and the search term into one list
     def getGenreList(self, searchTerm, lookupBlob):
         genreList = []
-        genreList.append(searchTerm.lower())
+        genreList.append(searchTerm)
         genres = lookupBlob[rigelSettings.KEY_genres()]
         if genres:
             for genreEntry in genres:
-                genreName = genreEntry[rigelSettings.KEY_genres_name()].lower()
+                genreName = genreEntry[rigelSettings.KEY_genres_name()]
                 if genreName == "games":
                     continue
-                # if genreName not in rigelSettings.appStoreGameGenres():
-                #     continue
+                if genreName in rigelSettings.ignoreGenres():
+                    continue
                 if genreName not in genreList:
                     genreList.append(genreName)
 

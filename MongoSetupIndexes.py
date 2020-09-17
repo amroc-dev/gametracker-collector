@@ -22,28 +22,36 @@ from pprint import pprint
 
 def setupAll():
     indexes = collection.index_information()
-    if mongoIndexNames.TRACKNAME_SELLER() in indexes.keys():
-        logger.log("Index exists: " + mongoIndexNames.TRACKNAME_SELLER())
+    if mongoIndexNames.TEXT_INDEX() in indexes.keys():
+        logger.log("Index exists: " + mongoIndexNames.TEXT_INDEX())
     else:
         setupTextIndexes();
-    if mongoIndexNames.TAGS() in indexes.keys():
-        logger.log("Index exists: " + mongoIndexNames.TAGS())
-    else:
-        setupTagsIndex();
+    # if mongoIndexNames.TAGS() in indexes.keys():
+    #     logger.log("Index exists: " + mongoIndexNames.TAGS())
+    # else:
+    #     setupTagsIndex();
 
 def setupTextIndexes():
-    indexName = mongoIndexNames.TRACKNAME_SELLER()
+    indexName = mongoIndexNames.TEXT_INDEX()
     logger.log("Creating index: " + indexName)
-    collection.create_index([(
-        "trackName", TEXT), 
-        ("searchBlob.sellerName", TEXT)],
+    collection.create_index( 
+        [
+            ("trackName", TEXT), 
+            ("searchBlob.sellerName", TEXT),
+            ("tags", TEXT)
+        ],
+        weights={
+            "trackName": 2,
+            "searchBlob.sellerName": 2,
+            "tags": 1
+        },
         name=indexName)
 
-def setupTagsIndex():
-    indexName = mongoIndexNames.TAGS()
-    logger.log("Creating index: " + indexName)
-    collection.create_index([("tags", pymongo.ASCENDING)],
-        name=indexName)
+# def setupTagsIndex():
+#     indexName = mongoIndexNames.TAGS()
+#     logger.log("Creating index: " + indexName)
+#     collection.create_index([("tags", pymongo.ASCENDING)],
+#         name=indexName)
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)

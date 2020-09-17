@@ -162,6 +162,11 @@ class RigelSettings:
     def KEY_genres_name(self):
         return "name"
 
+    def ignoreGenres(self):
+        return [
+            'entertainment'
+        ]
+
     # def appStoreGameGenres(self):
     #     return (    'action', \
     #                 'adventure', \
@@ -228,10 +233,10 @@ mongoValidatorSettings = MongoValidatorSettings()
 
 class MongoIndexNames:
     
-    def TRACKNAME_SELLER(self):
-        return "trackName_sellerName_textIndex"
+    def TEXT_INDEX(self):
+        return "trackName_sellerName_tags"
 
-    def TAGS(self):
-        return "tags_index"
+    # def TAGS(self):
+    #     return "tags_index"
 
 mongoIndexNames = MongoIndexNames()

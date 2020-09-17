@@ -30,6 +30,12 @@ def retriveUniqueTags():
     results = collection.distinct("tags")
     return results
 
+def deleteTag(tagName):
+    collection.update_many(
+            {}, 
+            {'$pull': {'tags': tagName}}
+        )
+
 
 def showTagsByPopularity():
     allTags = retriveUniqueTags()
@@ -169,9 +175,9 @@ if __name__ == '__main__':
 
     #overwriteTest()
     # setupTagsIndex()
-    #showTagsByPopularity()
+    # showTagsByPopularity()
     # showGamesByPopularity()
     # showGamesByReleaseDate()
-    overwriteTest2()
+    deleteTag("entertainment")
 
     sys.exit(1)
