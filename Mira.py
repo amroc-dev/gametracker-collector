@@ -128,7 +128,7 @@ class Mira:
         self.sleeper.sleepIfNecessary(logger, "Searching")    
 
         try:
-            response = requests.get(searchURL, proxies = None if proxyServer is None else {'https': proxyServer})
+            response = requests.get(searchURL, proxies = None if proxyServer is None else {'https': proxyServer}, timeout = 10)
         except requests.exceptions.RequestException as e:
             logger.log("Request exception: ")
             print(str(e))

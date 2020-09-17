@@ -117,7 +117,7 @@ class Rigel:
         logger.log(" iTunes lookup...")
         self.lookupSleeper.sleepIfNecessary(logger, "Lookup")
         try:
-            lookupResponse = requests.get(rigelSettings.metaLookupURL_base().replace("__ID__", trackIdRequestList, 1))
+            lookupResponse = requests.get(rigelSettings.metaLookupURL_base().replace("__ID__", trackIdRequestList, 1), timeout = 10)
         except requests.exceptions.RequestException as e:
             logger.log(e)
 

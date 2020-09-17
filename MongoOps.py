@@ -178,6 +178,6 @@ if __name__ == '__main__':
     # showTagsByPopularity()
     # showGamesByPopularity()
     # showGamesByReleaseDate()
-    deleteTag("entertainment")
+    deleteTag("Games")
 
     sys.exit(1)
