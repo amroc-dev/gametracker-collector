@@ -241,6 +241,9 @@ class MongoIndexNames:
     def TEXT_INDEX(self):
         return "trackName_sellerName_tags"
 
+    def DEVICE_FAMILIES_INDEX(self):
+        return "deviceFamilies"
+
     # def TAGS(self):
     #     return "tags_index"
 

@@ -25,11 +25,12 @@ def setupAll():
     if mongoIndexNames.TEXT_INDEX() in indexes.keys():
         logger.log("Index exists: " + mongoIndexNames.TEXT_INDEX())
     else:
-        setupTextIndexes();
-    # if mongoIndexNames.TAGS() in indexes.keys():
-    #     logger.log("Index exists: " + mongoIndexNames.TAGS())
-    # else:
-    #     setupTagsIndex();
+        setupTextIndexes()
+
+    if mongoIndexNames.DEVICE_FAMILIES_INDEX() in indexes.keys():
+        logger.log("Index exists: " + mongoIndexNames.DEVICE_FAMILIES_INDEX())
+    else:
+        setupDeviceIndex()
 
 def setupTextIndexes():
     indexName = mongoIndexNames.TEXT_INDEX()
@@ -47,11 +48,8 @@ def setupTextIndexes():
         },
         name=indexName)
 
-# def setupTagsIndex():
-#     indexName = mongoIndexNames.TAGS()
-#     logger.log("Creating index: " + indexName)
-#     collection.create_index([("tags", pymongo.ASCENDING)],
-#         name=indexName)
+def setupDeviceIndex():
+    collection.create_index("lookupBlob.deviceFamilies", name=mongoIndexNames.DEVICE_FAMILIES_INDEX())
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)

@@ -156,6 +156,18 @@ def overwriteTest2():
 
     collection.bulk_write(bulkUpdatesArray)
 
+def showDeviceFamilies():
+    results = collection.find({})
+    
+    count = 0
+    
+    for result in results:
+        logger.log(str(result.get("lookupBlob").get("deviceFamilies")))
+        count = count + 1
+        if count == 1000:
+            break
+
+
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoSetupIndexes", Helpers.mongoLogColor)
     logger.log("Connecting to database")
@@ -178,6 +190,7 @@ if __name__ == '__main__':
     # showTagsByPopularity()
     # showGamesByPopularity()
     # showGamesByReleaseDate()
-    deleteTag("Games")
+    # deleteTag("Games")
+    showDeviceFamilies()
 
     sys.exit(1)
