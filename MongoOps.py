@@ -16,6 +16,7 @@ from Settings import rigelSettings
 from datetime import datetime
 import Helpers
 import json
+import bson
 from pprint import pprint
 
 
@@ -169,7 +170,7 @@ def showDeviceFamilies():
 
 
 if __name__ == '__main__':
-    logger = Helpers.Logger("MongoSetupIndexes", Helpers.mongoLogColor)
+    logger = Helpers.Logger("MongoOps", Helpers.mongoLogColor)
     logger.log("Connecting to database")
 
     client = None
@@ -191,6 +192,15 @@ if __name__ == '__main__':
     # showGamesByPopularity()
     # showGamesByReleaseDate()
     # deleteTag("Games")
-    showDeviceFamilies()
+    # showDeviceFamilies()
+
+    # bulkUpdates = []
+    # bulkUpdates.append(pymongo.DeleteOne( {'_id': bson.int64.Int64('1520736876')} ))
+    # results = collection.bulk_write(bulkUpdates)
+    # logger.log("Databased updated. Deleted: " + str(results.deleted_count))
+
+
+    results = collection.count_documents( {"dateValidated": {"$exists" : False}} )
+    logger.log("Result: " + str(results))
 
     sys.exit(1)

@@ -61,7 +61,7 @@ class MiraSettings:
         return "appleSearchBlobs"
 
     def searchURL_base(self):
-        return 'https://itunes.apple.com/search?term=__TERM__&entity=software&genreId=6014&limit=__LIMIT__&offset=__OFFSET__'
+        return 'https://itunes.apple.com/search?term=__TERM__&entity=software,iPadSoftware&genreId=6014&limit=__LIMIT__&offset=__OFFSET__'
 
     # amount of seconds between each main api call (apple specifies that you shouldn't go over 20 a minute)
     def MIN_SEARCH_TIME(self):
@@ -226,10 +226,10 @@ mongoSettings = MongoSettings()
 class MongoValidatorSettings:
 
     def UPDATE_INTERVAL(self):
-        return 5
+        return 6
 
     def LOOKUP_COUNT(self):
-        return 75
+        return 200
 
     def KEY_dateValidated(self):
         return "dateValidated"
