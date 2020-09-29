@@ -19,7 +19,6 @@ import json
 import bson
 from pprint import pprint
 
-
 def setupTagsIndex():
     logger.log("Creating tags index")
     collection.create_index([("tags", pymongo.ASCENDING)], collation=Collation(
@@ -83,24 +82,6 @@ def showGamesByPopularity():
     for item in listofTuples:
         print(str(num) + " : " + str(item))
         num += 1
-
-
-def showGamesByReleaseDate():
-    results = collection.find({})
-    reivewPairs = {}
-    for result in results:
-        name = result[rigelSettings.KEY_trackName()]
-        releaseDate = result[rigelSettings.KEY_releaseDate()]
-        reivewPairs[name] = releaseDate
-
-    listofTuples = sorted(reivewPairs.items(),
-                          reverse=True, key=lambda x: x[1])
-
-    num = 1
-    for item in listofTuples:
-        print(str(num) + " : " + str(item))
-        num += 1
-
 
 def bigBlobTestWrite():
     with open('Test/BigBlob.json', encoding='utf-8') as json_file:
@@ -168,6 +149,15 @@ def showDeviceFamilies():
         if count == 1000:
             break
 
+# def updateMetaRankings():
+#     results = collection.find({})
+#     db_keys = get_dbkeys()
+#     for result in results:
+#         ratingCount = get_valWithDotted(result, db_keys["popularity"])
+#         rating = get_valWithDotted(result, db_keys["rating"])
+#         ranking = calcRanking(ratingCount, rating)
+#         logger.log(str(ranking))
+#         break
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoOps", Helpers.mongoLogColor)
@@ -200,7 +190,11 @@ if __name__ == '__main__':
     # logger.log("Databased updated. Deleted: " + str(results.deleted_count))
 
 
-    results = collection.count_documents( {"dateValidated": {"$exists" : False}} )
-    logger.log("Result: " + str(results))
+    # results = collection.count_documents( {"dateValidated": {"$exists" : False}} )
+    # logger.log("Result: " + str(results))
+
+    # logger.log(str(calcRanking(454545,0)))
+    # updateMetaRankings()
+
 
     sys.exit(1)

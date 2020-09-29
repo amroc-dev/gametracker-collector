@@ -1,0 +1,121 @@
+{
+  "results": {
+    "350395769": {
+      "artwork": {
+        "width": 1024,
+        "url": "https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/ae/a4/1c/aea41c72-dedf-7296-1b9d-acc80c2d8b66/AppIcon032-1x_U007emarketing-0-4-85-220.png/{w}x{h}bb.{f}",
+        "height": 1024,
+        "textColor3": "a2b77d",
+        "textColor2": "b1d48c",
+        "textColor4": "8fad78",
+        "hasAlpha": false,
+        "textColor1": "c8e192",
+        "bgColor": "080e29",
+        "hasP3": false,
+        "supportsLayeredImage": false
+      },
+      "artistName": "Donut Games",
+      "url": "https://apps.apple.com/us/app/comet-racer/id350395769",
+      "shortUrl": "https://apps.apple.com/us/app/comet-racer/id350395769",
+      "softwareInfo": {
+        "supportUrl": "http://www.donutgames.com/contact.php?os=ios",
+        "privacyPolicyUrl": "http://www.donutgames.com/privacy.php?os=ios",
+        "eulaUrl": null,
+        "languagesDisplayString": "English",
+        "isGameCenter": true,
+        "privacyPolicyTextUrl": null,
+        "requirementsString": "Requires iOS 8.0 or later. Compatible with iPhone, iPad, and iPod touch.",
+        "seller": "Donut Games",
+        "websiteUrl": "http://www.donutgames.com"
+      },
+      "hasPrimaryArtist": true,
+      "deviceFamilies": ["iphone", "ipad", "ipod"],
+      "genreNames": ["Games", "Casual", "Racing"],
+      "whatsNew": "- Support for the latest iOS and aspect ratios above 2:1\n\nHope you enjoy! And thanks to all fans who\u0027ve stood by Donut Games all these years.\n",
+      "nameSortValue": "CometRacer",
+      "id": "350395769",
+      "releaseDate": "2010-01-19",
+      "userRating": {
+        "value": 3,
+        "ratingCount": 3112,
+        "valueCurrentVersion": 5,
+        "ratingCountCurrentVersion": 2
+      },
+      "contentRatingsBySystem": {
+        "appsApple": { "name": "4+", "value": 100, "rank": 1 }
+      },
+      "name": "Comet Racer",
+      "artistUrl": "https://apps.apple.com/us/developer/donut-games/id310068844",
+      "nameRaw": "Comet Racer",
+      "editorialArtwork": {
+        "brandLogo": {
+          "width": 1080,
+          "url": "https://is4-ssl.mzstatic.com/image/thumb/Features123/v4/4a/b7/95/4ab79565-019b-fb17-4d7f-917773a447d7/source/{w}x{h}{c}.{f}",
+          "height": 1080,
+          "textColor3": "c1c1c1",
+          "textColor2": "e5e5e5",
+          "textColor4": "b7b7b7",
+          "hasAlpha": true,
+          "textColor1": "f2f2f2",
+          "bgColor": "000000",
+          "hasP3": false,
+          "supportsLayeredImage": false
+        }
+      },
+      "bundleId": "com.donutgames.cometracer",
+      "isVppDeviceBasedLicensingEnabled": true,
+      "kind": "iosSoftware",
+      "copyright": "© 2009-2020 Donut Games",
+      "latestVersionReleaseDate": "May 14, 2020",
+      "artistId": "310068844",
+      "genres": [
+        {
+          "genreId": "6014",
+          "name": "Games",
+          "url": "https://itunes.apple.com/us/genre/id6014",
+          "mediaType": "8"
+        },
+        {
+          "genreId": "7003",
+          "name": "Casual",
+          "url": "https://itunes.apple.com/us/genre/id7003",
+          "mediaType": "8"
+        },
+        {
+          "genreId": "7013",
+          "name": "Racing",
+          "url": "https://itunes.apple.com/us/genre/id7013",
+          "mediaType": "8"
+        }
+      ],
+      "minimumOSVersion": "8.0",
+      "description": {
+        "standard": "Prepare for wild races inside abandoned mining rocks and comets throughout the universe!\n\nRace against the clock or your own shadow through squiggly mazes packed with power-ups, secret passages and hidden items.\n\n* * * * * * * * * * * * * * * * * * * * * * * *\n\nTOUCH ARCADE SAYS:\n\n- \"Comet Racer is easy to get into and fun to try to master. It\u0027s one of those games that can draw you in for hours...\"\n\nFeatured by APPLE, Jan 2010, as:\n\n- \"What\u0027s Hot\" in iTunes\n- \"Hot New Games\" in App Store\n\n* * * * * * * * * * * * * * * * * * * * * * * *\n\nTHIS IS COMET RACER:\n\n- Varying RACE TRACKS in space and inside comets\n- 3 Control Modes\n- Hidden secrets and surprises spread throughout the game\n- Power-ups to protect your ship\n- Donut Games\u0027 highly acclaimed 3-star system: Improved replay value!\n- Collectors Icon #18\n- Support for playing your own iTunes music in the background\n\nTECH FEATURES:\n\n- Game Center support\n- MFi controller support\n- ION Arcade controller support\n- Universal App (iPad, iPhone, iPod Touch)\n\n* * * * * * * * * * * * * * * * * * * * * * * *\n\nEnjoy another Donut Games release!"
+      },
+      "requiredCapabilities": "gamekit ",
+      "offers": [
+        {
+          "actionText": {
+            "short": "Buy",
+            "medium": "Buy",
+            "long": "Buy App",
+            "downloaded": "Installed",
+            "downloading": "Installing"
+          },
+          "type": "buy",
+          "priceFormatted": "$1.99",
+          "price": 1.99,
+          "buyParams": "productType=C\u0026price=1990\u0026salableAdamId=350395769\u0026pricingParameters=STDQ\u0026pg=default\u0026marketType=ENT\u0026appExtVrsId=835944305",
+          "version": { "display": "1.13", "externalId": 835944305 },
+          "assets": [{ "flavor": "iosSoftware", "size": 12769280 }]
+        }
+      ]
+    }
+  },
+  "version": 2,
+  "isAuthenticated": false,
+  "meta": {
+    "storefront": { "id": "143441", "cc": "US" },
+    "language": { "tag": "en-us" }
+  }
+}

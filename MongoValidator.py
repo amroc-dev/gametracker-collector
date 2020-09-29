@@ -1,5 +1,5 @@
 #######################################################################
-# MongoValidator
+# MongoUpdateGames
 # Scans all existing games in database, performing two checks:
 # 1. Does the app have IAP (this could happen if the developer has since added IAP in an update)
 # 2. Does the app no longer return a result in the iTunes lookup API (guess this means the app has been removed from sale?)
@@ -94,7 +94,6 @@ class MongoValidator:
         except requests.exceptions.RequestException as e:
             logger.log(e)
 
-        appEntries = []
         resultCount = 0
         bulkUpdatesArray = []
 

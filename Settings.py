@@ -162,7 +162,6 @@ class RigelSettings:
     def KEY_genres_name(self):
         return "name"
 
-
     def ignoreGenres(self):
         
         # enter these lower case
@@ -199,6 +198,9 @@ class RigelSettings:
     def GAMEKEY_tags(self):
         return "tags"
 
+    def GAMEKEY_metaRanking(self):
+        return "metaRanking"
+
 rigelSettings  = RigelSettings()
 
 ## ------------------------------------------------------------------------------------------
@@ -217,7 +219,6 @@ class MongoSettings:
     def COLLECTION_NAME(self):
         return "Games"
 
-    
     def COLLECTION_META_NAME(self):
         return "Games_meta"
 
@@ -244,7 +245,13 @@ class MongoIndexNames:
     def DEVICE_FAMILIES_INDEX(self):
         return "deviceFamilies"
 
-    # def TAGS(self):
-    #     return "tags_index"
+    def RELEASE_DATE_INDEX(self):
+        return "releaseDate"
+
+    def PRICE_INDEX(self):
+        return "price"
+
+    def POPULARITY_INDEX(self):
+        return "popularity"
 
 mongoIndexNames = MongoIndexNames()

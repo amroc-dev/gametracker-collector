@@ -20,21 +20,16 @@ import Helpers
 import json
 from pprint import pprint
 
-def setupAll():
-    indexes = collection.index_information()
-    if mongoIndexNames.TEXT_INDEX() in indexes.keys():
-        logger.log("Index exists: " + mongoIndexNames.TEXT_INDEX())
+def setup(indexes, indexName, createFunc):
+    if indexName in indexes.keys():
+        logger.log("Index exists: " + indexName)
+        return False
     else:
-        setupTextIndexes()
+        logger.log("Creating index: " + indexName)
+        createFunc(indexName)
+        return True
 
-    if mongoIndexNames.DEVICE_FAMILIES_INDEX() in indexes.keys():
-        logger.log("Index exists: " + mongoIndexNames.DEVICE_FAMILIES_INDEX())
-    else:
-        setupDeviceIndex()
-
-def setupTextIndexes():
-    indexName = mongoIndexNames.TEXT_INDEX()
-    logger.log("Creating index: " + indexName)
+def setupTextIndexes(indexName):
     collection.create_index( 
         [
             ("trackName", TEXT), 
@@ -48,8 +43,17 @@ def setupTextIndexes():
         },
         name=indexName)
 
-def setupDeviceIndex():
-    collection.create_index("lookupBlob.deviceFamilies", name=mongoIndexNames.DEVICE_FAMILIES_INDEX())
+def setupDeviceIndex(indexName):
+    collection.create_index("lookupBlob.deviceFamilies", name=indexName)
+
+def setupReleaseDateIndex(indexName):
+    collection.create_index("lookupBlob.releaseDate", name=indexName)
+
+def setupPriceIndex(indexName):
+    collection.create_index("searchBlob.formattedPrice", name=indexName)
+
+def setupPopularityIndex(indexName):
+    collection.create_index("lookupBlob.userRating.ratingCount", name=indexName)
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)
@@ -70,6 +74,25 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    setupAll()
+    # array of creation functions, in a tuple with the name of the index
+    creationFuncs = [
+        (mongoIndexNames.TEXT_INDEX(), setupTextIndexes),
+        (mongoIndexNames.DEVICE_FAMILIES_INDEX(), setupDeviceIndex),
+        (mongoIndexNames.RELEASE_DATE_INDEX(), setupReleaseDateIndex),
+        (mongoIndexNames.PRICE_INDEX(), setupPriceIndex),
+        (mongoIndexNames.POPULARITY_INDEX(), setupPopularityIndex),
+    ]
+
+    indexes = collection.index_information()
+
+    # # delete all indexes
+    # for func in creationFuncs:
+    #     if func[0] in indexes.keys():
+    #         logger.log("Deleting index: " + func[0])
+    #         collection.drop_index(func[0])
+
+    ## create all indexes if they don't already exist
+    for func in creationFuncs:
+        setup(indexes, func[0], func[1])
 
     sys.exit(1)

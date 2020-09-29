@@ -1,8 +1,7 @@
 #######################################################################
-# Mongo Ops
-# Just a collection of tests/useful database operations
+# MongoUpdateMeta
+# Updates the Games_meta collection
 #######################################################################
-
 
 import os
 from os import path
@@ -25,11 +24,9 @@ def setupTagsIndex():
         locale='en', strength=CollationStrength.PRIMARY))
     # collection.createIndex( { "tags": 1}, { { collation: collationData } )
 
-
 def retriveUniqueTags():
     results = collection.distinct("tags")
     return results
-
 
 def showTagsByPopularity():
     allTags = retriveUniqueTags()

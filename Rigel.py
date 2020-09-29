@@ -23,6 +23,7 @@ from tendo import singleton
 import colored
 import random
 import Helpers
+from MetaRanking import calcRanking
 
 class Rigel:
     def __init__(self):
@@ -87,6 +88,10 @@ class Rigel:
         appEntry[rigelSettings.GAMEKEY_tags()] = self.getGenreList(searchTerm, lookupBlob)
         appEntry[rigelSettings.KEY_searchBlob()] = searchBlob
         appEntry[rigelSettings.KEY_lookupBlob()] = lookupBlob
+        
+        # calc the metaRanking
+        appEntry[rigelSettings.GAMEKEY_metaRanking()] = calcRanking(appEntry)
+
         return appEntry
 
     def dumpResults(self, appEntries):
@@ -137,7 +142,6 @@ class Rigel:
                 
             for metaResult in metaResults.values():
                 trackId = metaResult[rigelSettings.KEY_id()]
-                trackName = metaResult[rigelSettings.KEY_name()]
 
                 if self.hasInAppPurchases(metaResult):
                     continue
