@@ -50,10 +50,13 @@ def setupReleaseDateIndex(indexName):
     collection.create_index("lookupBlob.releaseDate", name=indexName)
 
 def setupPriceIndex(indexName):
-    collection.create_index("searchBlob.formattedPrice", name=indexName)
+    collection.create_index("searchBlob.price", name=indexName)
 
 def setupPopularityIndex(indexName):
     collection.create_index("lookupBlob.userRating.ratingCount", name=indexName)
+
+def setupMetaRankingIndex(indexName):
+    collection.create_index("metaRanking", name=indexName)
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)
@@ -81,6 +84,7 @@ if __name__ == '__main__':
         (mongoIndexNames.RELEASE_DATE_INDEX(), setupReleaseDateIndex),
         (mongoIndexNames.PRICE_INDEX(), setupPriceIndex),
         (mongoIndexNames.POPULARITY_INDEX(), setupPopularityIndex),
+        (mongoIndexNames.METARANKING_INDEX(), setupMetaRankingIndex),
     ]
 
     indexes = collection.index_information()

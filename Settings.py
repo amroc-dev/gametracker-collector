@@ -254,4 +254,7 @@ class MongoIndexNames:
     def POPULARITY_INDEX(self):
         return "popularity"
 
+    def METARANKING_INDEX(self):
+        return "metaRanking"
+
 mongoIndexNames = MongoIndexNames()

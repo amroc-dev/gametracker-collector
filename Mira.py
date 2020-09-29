@@ -53,7 +53,7 @@ class Mira:
     def moveToNextTerm(self):
         self.dumpResults()
         self.prepareForNewTerm()
-        saveFile.update()
+        saveFile.moveToNextTerm()
         if saveFile.currentTerm == None:
             return False
         return True
@@ -116,19 +116,10 @@ class Mira:
 
         itunesSearchLogString = " iTunes search... term:" + logger.highlight(saveFile.currentTerm) + " " + saveFile.getTermProgressString(saveFile.currentTerm) + ", offset:" + str(self.offset)
         logger.log(itunesSearchLogString)
-        proxyDomainName = "None"
-        if proxyServer is not None:
-            domainExt = tldextract.extract(proxyServer)
-            if len(domainExt.registered_domain) > 0:
-                proxyDomainName = domainExt.subdomain + "." + domainExt.registered_domain
-            else:
-                proxyDomainName = domainExt.ipv4
-        logger.log("Proxy: " + colored.fg('white') + proxyDomainName)
-
         self.sleeper.sleepIfNecessary(logger, "Searching")    
 
         try:
-            response = requests.get(searchURL, proxies = None if proxyServer is None else {'https': proxyServer}, timeout = 10)
+            response = requests.get(searchURL, proxies = None, timeout = 10)
         except requests.exceptions.RequestException as e:
             logger.log("Request exception: ")
             print(str(e))
@@ -204,75 +195,54 @@ class SaveFile:
     def __init__(self):
         self.path = miraSettings.OUTPUT_DIR() + "/" + miraSettings.SAVE_FILENAME()
         self.currentTerm = None
-        self.update(True)
+        self.progressString = ""
+        self.init()
+
+    def init(self):
+        saveData = self.__getSaveData()
+        term = saveData["working"]["term"]
+        if term is not None:
+            if not term in saveData["terms"]:
+                logger.log("Error: working term in save file not found in terms list")
+                term = None
+                sys.exit(1)
+            logger.log("Resuming work")
+            self.__setCurrentTerm(term)
 
     def getTermProgressString(self, term):
-        return ""
+        return self.progressString
 
-    def update(self, tryResume = False):
-        lockFilePath = miraSettings.OUTPUT_DIR() + "/" + miraSettings.LOCK_FILE_NAME()
-        lock = FileLock(lockFilePath)
-        lock.acquire()
-        self.__update(tryResume)
-        lock.release()
-            
-    def __update(self, tryResume = False):
-        #first if there's no save file to read, create one
-        data = None
+    def moveToNextTerm(self):
+        saveData = self.__getSaveData()
+        termsList = saveData["terms"]
+        nextTermIndex = termsList.index(self.currentTerm) + 1
+        nextTerm = None
+        if nextTermIndex < len(termsList):
+            nextTerm = termsList[nextTermIndex]
+        self.__setCurrentTerm(nextTerm)
+
+    def __getSaveData(self):
+        saveData = None
         if not path.exists(self.path):
             self.__createNewSaveFile()
         with open(self.path, encoding='utf-8') as json_file:
-            data = json.load(json_file)
-       
-        # if we're trying to resume, find a record of the current worker if there is one and pick up from there
-        workers = data["workers"]
-        if tryResume:
-            if processName in workers:
-                logger.log("Resuming work")
-                self.__setCurrentTerm(workers[processName], data)
-                return
+            saveData = json.load(json_file) 
+        return saveData
 
-        # if we're not resuming then move to the first unworked term after the latest recorded worked term
-        termsList = data["terms"]
-        highestWorkedTermIndex = -1
-        termsBeingWorked = list(workers.values())
-        if len(termsBeingWorked) > 0:
-            for workedTerm in termsBeingWorked:
-                tIndex = 0
-                if workedTerm == None:
-                    self.__setCurrentTerm(None, data)
-                    return
-                for term in termsList:
-                    if workedTerm == term:
-                        if tIndex > highestWorkedTermIndex:
-                            highestWorkedTermIndex = tIndex
-                            break
-                    tIndex += 1
-        
-        nextTermIndex = 0
-        if highestWorkedTermIndex > -1:
-            nextTermIndex = highestWorkedTermIndex + 1
-
-        if nextTermIndex < len(termsList):
-            self.__setCurrentTerm(termsList[nextTermIndex], data)
-        else:
-            self.__setCurrentTerm(None, data)
-
-    def __setCurrentTerm(self, term, fileData):
+    def __setCurrentTerm(self, term):
         self.currentTerm = term
-        workers = fileData["workers"]
-        if term is None:
-            workers[processName] = None
-        else:
-            workers[processName] = term
+        saveObj = self.__getSaveData()
+        saveObj["working"]["term"] = self.currentTerm
 
         with open(self.path, 'w', encoding='utf-8') as outfile:
-            json.dump(fileData, outfile, indent=4, ensure_ascii=False)
+            json.dump(saveObj, outfile, indent=4, ensure_ascii=False)
 
-        if term is None:   
+        if self.currentTerm is None:   
             logger.log("All terms finished")
         else:
             logger.log("Term: " + logger.highlight(self.currentTerm))
+            allTerms = saveObj["terms"]
+            self.progressString = str(allTerms.index(self.currentTerm)+1) + "/" + str(len(allTerms))
 
     def __createNewSaveFile(self):
         logger.log("Creating save file")
@@ -286,12 +256,11 @@ class SaveFile:
                         term = line.replace("\n", "")
                         if term not in termsList:
                             termsList.append(term)
-            # logger.log("Using terms: " + fileName)
-
         data = {}
         data["terms"] = termsList
-        data["workers"] = {}
-        workers = data["workers"]
+        firstTerm = termsList[0]
+        data["working"] = { "term" : firstTerm }
+        self.currentTerm = firstTerm
         with open(self.path, 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
@@ -300,19 +269,9 @@ class SaveFile:
 #####################################################################
 
 if __name__ == '__main__':
-    processName = miraSettings.PROCESS_NAME()
-    proxyServer = None
-    if len(sys.argv) > 1:
-        processName = sys.argv[1]
-        if len(sys.argv) > 2:
-            proxyServer = sys.argv[2]
-    else:
-        try:
-            me = singleton.SingleInstance()
-        except singleton.SingleInstanceException as e:
-            sys.exit(1)
+    me = singleton.SingleInstance()
 
-    logger = Helpers.Logger(processName, Helpers.miraLogColor)
+    logger = Helpers.Logger("Mira", Helpers.miraLogColor)
     logger.log("Starting")
 
     if not os.path.exists(miraSettings.TERMS_DIR()):
@@ -322,68 +281,9 @@ if __name__ == '__main__':
          os.makedirs(miraSettings.OUTPUT_DIR())
 
     saveFile = SaveFile()
-    if saveFile.currentTerm != None:
+    if saveFile.currentTerm == None:
+        logger.log("All terms finished")
+    else:
         Mira().run()
 
 
-
-
-
-
-
-# #######################################################################
-
-# class TermsFile:
-#     def __init__(self):
-#         self.fileName = None
-#         self.terms = []
-#         self.currentTermIndex = 0
-
-#     def load(self, fileName):
-#         fullPath = miraSettings.TERMS_DIR() + "/" + str(fileName)
-#         if path.exists(fullPath):
-#             self.terms.clear()
-#             with open(fullPath, encoding='utf-8') as f:
-#                 for line in f:
-#                     if not line.startswith("#"):
-#                         self.terms.append(line.replace("\n", ""))
-#             self.currentTermIndex = 0
-#             self.fileName = fileName
-#             logger.log("Using terms: " + fileName)
-#             return True
-#         return False
-
-#     def seekTerm(self, term):
-#         index = 0
-#         for t in self.terms:
-#             if t == term:
-#                 self.currentTermIndex = index
-#                 break
-#             index = index+1
-
-#     def getTermProgressString(self, term):
-#         num = 1
-#         termFound = False
-#         for t in self.terms:
-#             if (t == term):
-#                 termFound = True
-#                 break
-#             num += 1
-
-#         if termFound:
-#             return ("(" + str(num) + "/" + str(len(self.terms)) + ")")
-#         return ("(?/" + str(len(self.terms)) + ")")
-
-#     def hasReachedEnd(self):
-#         return self.currentTermIndex >= len(self.terms)
-
-#     def moveToNextTerm(self):
-#         self.currentTermIndex = self.currentTermIndex + 1
-#         if not self.hasReachedEnd():
-#             logger.log(logger.highlight("New term:" + self.getCurrentTerm()))
-
-#     def getCurrentTerm(self):
-#         if self.currentTermIndex < len(self.terms):
-#             return self.terms[self.currentTermIndex]
-#         else:
-#             return ""
