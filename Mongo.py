@@ -70,10 +70,12 @@ class Mongo:
     def addEntryToBulkUpdates(self, result, bulkUpdatesArray):
         searchBlob = result[rigelSettings.KEY_searchBlob()]
         lookupBlob = result[rigelSettings.KEY_lookupBlob()]
+        metaRanking = result[rigelSettings.GAMEKEY_metaRanking()]
         trackName = searchBlob[rigelSettings.KEY_trackName()]
 
         data = {
             rigelSettings.KEY_trackName() : trackName,
+            rigelSettings.GAMEKEY_metaRanking() : metaRanking,
             rigelSettings.KEY_searchBlob() : searchBlob,
             rigelSettings.KEY_lookupBlob() : lookupBlob,
         }
