@@ -271,7 +271,7 @@ class SaveFile:
 if __name__ == '__main__':
     me = singleton.SingleInstance()
 
-    logger = Helpers.Logger("Mira", Helpers.miraLogColor)
+    logger = Helpers.Logger("Mira ", Helpers.miraLogColor)
     logger.log("Starting")
 
     if not os.path.exists(miraSettings.TERMS_DIR()):
