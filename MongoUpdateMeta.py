@@ -43,21 +43,16 @@ def showTagsByPopularity():
 
     listofTuples = sorted(tagsWithCounts.items(),
                           reverse=True, key=lambda x: x[1])
-    tagCounts = []
-    tagNames = []
-    # countAbove = 0
-    for item in listofTuples:
-        
-        tagNames.append(item[0])
 
-        tagCounts.append({
-            "tag" : item[0],
+    tagList = []
+    for item in listofTuples:
+        tagList.append({
+            "name" : item[0],
             "count" : item[1]
         })
 
     updateOp = {
-        "tags" : tagNames,
-        "counts" : tagCounts,  # just overwrite everything in data
+        "tags" : tagList,
     }
 
     logger.log("Updating database...")
