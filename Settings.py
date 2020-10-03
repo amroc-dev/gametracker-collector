@@ -211,7 +211,7 @@ class MongoSettings:
         return 1
 
     def CONNECTION_STRING(self):
-        return "mongodb+srv://amroc:mQazse76@cluster0.pddgq.mongodb.net/GameTracker?retryWrites=true&w=majority"
+        return "mongodb+srv://amroc:goobiesNerdicsDolphin@cluster0.pddgq.mongodb.net/GameTracker?retryWrites=true&w=majority"
 
     def DATABASE_NAME(self):
         return "GameTracker"

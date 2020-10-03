@@ -17,18 +17,11 @@ import Helpers
 import json
 from pprint import pprint
 
-
-def setupTagsIndex():
-    logger.log("Creating tags index")
-    collection.create_index([("tags", pymongo.ASCENDING)], collation=Collation(
-        locale='en', strength=CollationStrength.PRIMARY))
-    # collection.createIndex( { "tags": 1}, { { collation: collationData } )
-
 def retriveUniqueTags():
     results = collection.distinct("tags")
     return results
 
-def showTagsByPopularity():
+def updateTagsRecord():
     allTags = retriveUniqueTags()
     tagsWithCounts = {}
 
@@ -79,6 +72,6 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    showTagsByPopularity()
+    updateTagsRecord()
 
     sys.exit(1)
