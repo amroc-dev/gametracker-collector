@@ -15,43 +15,45 @@ from Settings import rigelSettings
 from datetime import datetime
 import Helpers
 import json
+import functools
 from pprint import pprint
 
-def retriveUniqueTags():
-    results = collection.distinct("tags")
-    return results
+def sortFunc(tagPairA, tagPairB):
+    if tagPairA[1] == tagPairB[1]:  
+        return -1 if tagPairA[0] < tagPairB[0] else 1
+    return 1 if tagPairA[1] < tagPairB[1] else -1
 
-def updateTagsRecord():
-    allTags = retriveUniqueTags()
-    tagsWithCounts = {}
+def updatTagsRecord():
+    logger.log("Querying...")
+    results = collection.find( {}, projection={rigelSettings.GAMEKEY_tags(): True} )
 
-    tagIndex = 0
-    logger.log("Counting tags...")
-    for tag in allTags:
-        tagCountQuery = {"tags": {"$elemMatch": {"$eq": tag}}}
-        count = collection.count_documents(tagCountQuery)
-        tagsWithCounts[tag] = count
-        logger.log(str(tagIndex+1) + "/" + str(len(allTags)))
-        tagIndex += 1
+    tagPairs = {}
+    for result in results:
+        for tag in result[rigelSettings.GAMEKEY_tags()]:
+            if tag in tagPairs:
+                tagPairs[tag] = tagPairs[tag] + 1
+            else:
+                tagPairs[tag] = 0
 
-    listofTuples = sorted(tagsWithCounts.items(),
-                          reverse=True, key=lambda x: x[1])
+    tagPairsArray = []
 
-    tagList = []
-    for item in listofTuples:
-        tagList.append({
+    for key in tagPairs:
+        tagPairsArray.append( (str(key), int(tagPairs[key])) )
+    
+    tagPairsArray.sort(key=functools.cmp_to_key(sortFunc))
+
+    logger.log("Found " + str(len(tagPairsArray)) + " unique tags")
+
+    entries = []
+    for item in tagPairsArray:
+        entries.append({
             "name" : item[0],
             "count" : item[1]
         })
 
-    updateOp = {
-        "tags" : tagList,
-    }
-
     logger.log("Updating database...")
-    collectionMeta.update_one({'_id': "tags"}, {'$set': updateOp}, upsert=True)
+    collectionMeta.update_one({'_id': "tags"}, {'$set': {"tags" : entries} }, upsert=True)
     logger.log("Done")
-
 
 if __name__ == '__main__':
     logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)
@@ -72,6 +74,6 @@ if __name__ == '__main__':
         logger.log("Connection Failure: " + str(e))
         sys.exit(1)
 
-    updateTagsRecord()
+    updatTagsRecord()
 
     sys.exit(1)
