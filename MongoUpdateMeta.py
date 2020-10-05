@@ -33,7 +33,7 @@ def updatTagsRecord():
             if tag in tagPairs:
                 tagPairs[tag] = tagPairs[tag] + 1
             else:
-                tagPairs[tag] = 0
+                tagPairs[tag] = 1
 
     tagPairsArray = []
 
