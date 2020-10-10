@@ -134,6 +134,9 @@ class Rigel:
     def clear(self):
         self.miraResults = []
 
+    def isEmpty(self):
+        return len(self.miraResults) == 0
+
     def update(self, searchTerm):
         if len(self.miraResults) == 0:
             self.logger.log("Waiting...")

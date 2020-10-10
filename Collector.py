@@ -80,8 +80,11 @@ class Collector:
 
         self.setCurrentTerm(currentTerm)
         
-        while True :
-            self.update()
+        running = True
+        while running :
+            running = self.update()
+
+        self.logger.log("All terms finished")
 
     def setCurrentTerm(self, term):
         self.logger.log("Term: " + term)
@@ -89,6 +92,19 @@ class Collector:
         Collector_MongoOps.setCurrentTerm(self.mongo, self.currentTerm)
         self.rigel.clear()
         self.mira.setTerm(self.currentTerm)
+
+    def getNextTerm(self):
+        terms = Collector_MongoOps.getTerms(self.mongo)
+        i = 0
+        for term in terms:
+            if term == self.currentTerm:
+                if (i+1) < len(terms):
+                    return terms[i+1]
+                else:
+                    return None
+            i = i+1
+
+        return None
 
     def update(self):
         self.miraSleeper.sleepIfNecessary()
@@ -106,8 +122,17 @@ class Collector:
         # the database succeeds again
         if rigelStatus == settings.rigel.returnCodes.mongoWriteFail:
             self.setCurrentTerm(self.currentTerm)
+        else:
+            if not self.mira.searchOngoing and self.rigel.isEmpty():
+                self.logger.log("Term complete")
+                nextTerm = self.getNextTerm()
+                if nextTerm is None:
+                    Collector_MongoOps.setCurrentTerm(self.mongo, None)
+                    return False
+                self.setCurrentTerm(nextTerm)
 
         self.updateLogTime()
+        return True
 
     def updateLogTime(self):
         self.currentTime = time.time()
