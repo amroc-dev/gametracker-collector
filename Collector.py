@@ -13,12 +13,36 @@ import Helpers
 from subprocess import Popen
 import colored
 import pymongo
-from pymongo import MongoClient
 from Mongo import Mongo
 from Mira import Mira
 from Rigel import Rigel
 from Shared import settings
 import numpy
+
+class Collector_MongoOps:
+    
+    @staticmethod
+    def setCurrentTerm(mongo, term):
+        mongo.collection_collector.update_one(
+        {'_id': settings.collector.db_keys.collectorId}, 
+        {'$set': {settings.collector.db_keys.currentTerm : term}}, 
+        upsert=True)
+        
+    @staticmethod
+    def getCurrentTerm(mongo):
+        result = mongo.collection_collector.find_one({'_id': settings.collector.db_keys.collectorId})
+        currentTerm = None
+        if settings.collector.db_keys.currentTerm in result:
+            currentTerm = result[settings.collector.db_keys.currentTerm]
+        return currentTerm
+        
+    @staticmethod
+    def getTerms(mongo):
+        result = mongo.collection_collector.find_one({'_id': settings.collector.db_keys.collectorId})
+        terms = []
+        if settings.collector.db_keys.terms in result:
+            terms = result[settings.collector.db_keys.terms]
+        return terms
 
 class Collector:
     def __init__(self):
@@ -31,6 +55,7 @@ class Collector:
         self.rigelSleeper = Helpers.Sleeper(settings.rigel.searchWaitInterval)
         self.collecterStartTime = 0
         self.lastLogTime = 0
+        self.currentTerm = None
  
     def start(self):
         self.collecterStartTime = time.time()
@@ -40,7 +65,20 @@ class Collector:
         self.mira = Mira()
         self.rigel = Rigel(self.mongo)
        
-        self.setCurrentTerm("Indie")
+        terms = Collector_MongoOps.getTerms(self.mongo)
+        if len(terms) == 0:
+            self.logger.log("No search terms in the database")
+            sys.exit(1)
+
+        currentTerm = Collector_MongoOps.getCurrentTerm(self.mongo)
+
+        if currentTerm in terms:
+            self.logger.log("Resuming...")
+        else:
+            self.logger.log("Starting from the beginning")
+            currentTerm = terms[0]
+
+        self.setCurrentTerm(currentTerm)
         
         while True :
             self.update()
@@ -48,6 +86,7 @@ class Collector:
     def setCurrentTerm(self, term):
         self.logger.log("Term: " + term)
         self.currentTerm = term
+        Collector_MongoOps.setCurrentTerm(self.mongo, self.currentTerm)
         self.rigel.clear()
         self.mira.setTerm(self.currentTerm)
 
