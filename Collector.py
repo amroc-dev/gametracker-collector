@@ -37,30 +37,38 @@ class Collector:
         self.lastLogTime = self.collecterStartTime
 
         self.mongo = Mongo()
-        self.mongo.connect()
         self.mira = Mira()
         self.rigel = Rigel(self.mongo)
-        self.currentTerm = "Indie"
-        self.mira.setTerm(self.currentTerm)
-
+       
+        self.setCurrentTerm("Indie")
+        
         while True :
             self.update()
+
+    def setCurrentTerm(self, term):
+        self.logger.log("Term: " + term)
+        self.currentTerm = term
+        self.rigel.clear()
+        self.mira.setTerm(self.currentTerm)
 
     def update(self):
         self.miraSleeper.sleepIfNecessary()
         self.mira.update()
-
-        self.checkDumpToRigel()
+        
+        miraResults = self.mira.getMiraResults()
+        if miraResults is not None:
+            self.rigel.addMiraResults(miraResults)
 
         self.rigelSleeper.sleepIfNecessary()
-        self.rigel.update(self.currentTerm)
+        rigelStatus = self.rigel.update(self.currentTerm)
+
+        # for all other others, keep retrying. 
+        # But if there is a database error then mira and rigel data will have been lost, so just the current term until
+        # the database succeeds again
+        if rigelStatus == settings.rigel.returnCodes.mongoWriteFail:
+            self.setCurrentTerm(self.currentTerm)
 
         self.updateLogTime()
-
-    def checkDumpToRigel(self):
-        results = self.mira.getMiraResults()
-        if results is not None:
-            self.rigel.addMiraResults(results)
 
     def updateLogTime(self):
         self.currentTime = time.time()

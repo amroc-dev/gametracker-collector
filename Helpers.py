@@ -45,16 +45,15 @@ def getWithExtension(fileName, extension):
     else:
         return fileName
 
-def makeProgressBar(normVal, pips = 20):
+def makeProgressBar(val, pips = 20):
     barFill = "▰"
     barEmpty = "-"
     bar = ""
     for x in range(0, pips):
-        xNorm = float(x) / float(pips)
-        if normVal >= xNorm:
-            bar = bar + barFill
-        else:
+        if x >= val:
             bar = bar + barEmpty
+        else:
+            bar = bar + barFill
     return bar
 
 

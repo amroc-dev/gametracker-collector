@@ -37,7 +37,7 @@ class Mira:
         self.logger.log("Starting")
         self.currentTerm = None
         self.offset = 0
-        self.exhaustedSearchCount = settings.mira.exhaustedSearchCount
+        self.exhaustedSearchCount = 0
         self.searchOngoing = False
 
     def setTerm(self, term):
@@ -47,9 +47,8 @@ class Mira:
 
         self.miraResults = []
         self.currentTerm = term
-        self.logger.log("Term: " + term)
         self.offset = 0
-        self.exhaustedSearchCount = settings.mira.exhaustedSearchCount
+        self.exhaustedSearchCount = 0
         self.searchOngoing = True
 
     def getMiraResults(self):
@@ -65,16 +64,15 @@ class Mira:
 
     def update(self):
         if self.currentTerm == None:
-            self.logger.log("No term set")
-            return False
+            self.searchOngoing = False
 
         if self.searchOngoing == False:
-            self.logger.log("Search completed, waiting for new term")
-            return False
+            self.logger.log("Waiting for new term...")
+            return
 
         status = self._update()
-
-        if status == False:
+        if status == settings.mira.returnCodes.searchCompleted:
+            self.logger.log("Search completed")
             self.searchOngoing = False
 
     def _update(self):
@@ -91,17 +89,15 @@ class Mira:
         try:
             response = requests.get(searchURL, proxies=None, timeout=10)
         except requests.exceptions.RequestException as e:
-            self.logger.log("Request exception: ")
-            print(str(e))
-            return True
+            self.logger.log("Request exception: " + str(e))
+            return
 
         if response.ok:
             try:
                 jsonResponse = response.json()
             except json.decoder.JSONDecodeError as e:
-                self.logger.log("JSON decode error: ")
-                print(str(e))
-                return True
+                self.logger.log("JSON decode error: " + str(e))
+                return
 
             resultCount = jsonResponse[settings.mira.api_keys.resultCount]
             results = jsonResponse[settings.mira.api_keys.results]
@@ -110,7 +106,7 @@ class Mira:
             if resultCount < settings.mira.minResults:
                 self.logger.log(
                     "Too few results (<" + str(settings.mira.minResults) + "), giving up")
-                return False
+                return settings.mira.returnCodes.searchCompleted
 
             matchedResults = []
             for result in results:
@@ -131,14 +127,11 @@ class Mira:
             newMatchCount = len(matchedResults)
 
             if newMatchCount == 0:
-                if self.exhaustedSearchCount > 0:
-                    self.exhaustedSearchCount -= 1
-                norm = 1 - (float(self.exhaustedSearchCount) /
-                            settings.mira.exhaustedSearchCount)
+                self.exhaustedSearchCount += 1
                 self.logger.log(
-                    "Exhaust progress: " + Helpers.makeProgressBar(norm, settings.mira.exhaustedSearchCount))
+                    "No new matches, exhaust progress: " + Helpers.makeProgressBar(self.exhaustedSearchCount, settings.mira.exhaustedSearchCount))
             else:
-                self.exhaustedSearchCount = settings.mira.exhaustedSearchCount
+                self.exhaustedSearchCount = 0
                 for match in matchedResults:
                     self.miraResults.append(MiraResult(match))
                 self.logger.log("Buffer size: " + str(len(self.miraResults)))
@@ -146,11 +139,9 @@ class Mira:
             self.logger.log(
                 "Search request failed with status code:" + str(response.status_code))
 
-        # if self.exhaustedSearchCount == 0:
-        #     logger.log("Search term exhaust limit reached")
-        #     return False
-
-        # return True
+        if self.exhaustedSearchCount == settings.mira.exhaustedSearchCount:
+            self.logger.log("Exhaust limit reached")
+            return settings.mira.returnCodes.searchCompleted
 
 
 # #######################################################################åå

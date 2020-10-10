@@ -28,6 +28,7 @@ import bson
 import numpy
 from Mongo import Mongo
 from Shared import settings
+import datetime
 
 ########################################################################
 
@@ -88,11 +89,14 @@ class MongoWriter:
         return True
 
     def addEntryToBulkUpdates(self, appEntry, bulkUpdatesArray):
+        dateNow = str(datetime.datetime.now())
+        
         data = {
             settings.rigel.api_keys.trackName: appEntry.searchBlob[settings.rigel.api_keys.trackName],
             settings.rigel.db_keys.metaRanking: appEntry.metaRanking,
             settings.rigel.db_keys.searchBlob: appEntry.searchBlob,
             settings.rigel.db_keys.lookupBlob: appEntry.lookupBlob,
+            settings.mongoValidator.db_keys.dateValidated: dateNow,
         }
 
         # the db update operation for a game entry
@@ -127,22 +131,26 @@ class Rigel:
                 return
             idx = idx + 1
 
+    def clear(self):
+        self.miraResults = []
+
     def update(self, searchTerm):
         if len(self.miraResults) == 0:
-            self.logger.log("Waiting for Mira")
+            self.logger.log("Waiting...")
             return
 
         chunkOfResults = self.miraResults[0:settings.mira.limit]
-        appEntries = self.doMetaLookup(chunkOfResults, searchTerm)
+        appEntries = []
+        self.doMetaLookup(chunkOfResults, searchTerm, appEntries)
 
-        if appEntries is None:
-            return
+        if len(appEntries) > 0:
+            writeStatusOk = self.mongoWriter.write(appEntries)
+            if not writeStatusOk:
+                return settings.rigel.returnCodes.mongoWriteFail
 
-        writeStatusOk = self.mongoWriter.write(appEntries)
-        if not writeStatusOk:
-            return settings.rigel.returnCodes.mongoWriteFail
+        return
 
-    def doMetaLookup(self, miraResultsChunk, searchTerm):
+    def doMetaLookup(self, miraResultsChunk, searchTerm, appEntriesOUT):
         trackIds = []
 
         for miraResult in miraResultsChunk:
@@ -158,14 +166,14 @@ class Rigel:
         requestString = str(len(miraResultsChunk))
         if len(self.miraResults) > len(miraResultsChunk):
             requestString = requestString + " of " + str(len(self.miraResults))
-        self.logger.log(" iTunes lookup... requesting " + requestString)
+        self.logger.log(" iTunes lookup... requesting: " + requestString)
         try:
             lookupResponse = requests.get(settings.rigel.lookupURL_base.replace(
                 "__ID__", trackIdRequestList, 1), timeout=10)
         except requests.exceptions.RequestException as e:
-            self.logger.log(e)
+            self.logger.log(str(e))
+            return
 
-        appEntries = []
         resultCount = 0
         lowReviewCount = 0
 
@@ -217,17 +225,13 @@ class Rigel:
                     self.logger.log(
                         "Warning, lookup returned a trackId that wasn't requested!?")
 
-                appEntries.append(
+                appEntriesOUT.append(
                     AppEntry(searchTerm, matchingSearchBlob, lookupBlob))
 
-            self.logger.log("Results: " + str(resultCount) + ", matches: " + str(len(appEntries)))
-            return appEntries
-
+            self.logger.log("Results: " + str(resultCount) + ", matches: " + str(len(appEntriesOUT)))
         else:
             self.logger.log(
                 "Lookup request failed with status code:" + str(lookupResponse.status_code))
-
-        return None
 
     def hasInAppPurchases(self, lookupBlob):
         # check if app has in app purchases or not
