@@ -3,6 +3,7 @@
         "__pycache__": true,
         "Out_Mira": true,
         "Out_Rigel": true,
+        "Archived" : true,
     },
     "python.pythonPath": "/usr/local/bin/python3"
 }
