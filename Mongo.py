@@ -1,6 +1,11 @@
+#######################################################################
+# Mongo
+# Class to connect to database and collections
+#######################################################################
 
 import pymongo
 from pymongo import MongoClient
+
 from Shared import settings
 import Helpers
 

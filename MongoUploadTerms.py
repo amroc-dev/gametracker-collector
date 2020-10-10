@@ -3,12 +3,11 @@
 # Upload search terms to the database for the collector to use
 #######################################################################
 
-import os
-import os.path
-from os import path
-import Helpers
-from Mongo import Mongo
 import pymongo
+from os import path
+
+from Mongo import Mongo
+import Helpers
 from Shared import settings
 
 if __name__ == '__main__':
@@ -34,11 +33,11 @@ if __name__ == '__main__':
         upsert=True)
     )
 
-    updates.append(pymongo.UpdateOne(
-        {'_id': settings.collector.db_keys.collectorId}, 
-        {'$set': {settings.collector.db_keys.currentTerm : ""}}, 
-        upsert=True)
-    )
+    # updates.append(pymongo.UpdateOne(
+    #     {'_id': settings.collector.db_keys.collectorId}, 
+    #     {'$set': {settings.collector.db_keys.currentTerm : ""}}, 
+    #     upsert=True)
+    # )
 
     results = mongo.collection_collector.bulk_write(updates)
 

@@ -3,20 +3,10 @@
 # Just a collection of tests/useful database operations
 #######################################################################
 
-
-import os
-from os import path
-import sys
-import pymongo
-from pymongo.collation import Collation, CollationStrength
-from pymongo import MongoClient
 from pymongo import TEXT
-from datetime import datetime
-import Helpers
+
 from Mongo import Mongo
 from Shared import settings
-import json
-from pprint import pprint
 
 def setup(indexes, indexName, createFunc):
     if indexName in indexes.keys():
@@ -58,7 +48,7 @@ def setupMetaRankingIndex(indexName):
 
 if __name__ == '__main__':
     mongo = Mongo("MongoSetupIndexes")
-    
+
     # array of creation functions, in a tuple with the name of the index
     indexNames = settings.mongo.indexNames.games
     creationFuncs = [
@@ -81,5 +71,3 @@ if __name__ == '__main__':
     ## create all indexes if they don't already exist
     for func in creationFuncs:
         setup(indexes, func[0], func[1])
-
-    sys.exit(1)

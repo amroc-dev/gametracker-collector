@@ -3,24 +3,17 @@
 # Process to run Mira, Rigel and Mongo in same terminal
 #######################################################################
 
-import os
-import os.path
-from os import path
-import time
 import sys
-from tendo import singleton
-import Helpers
-from subprocess import Popen
-import colored
-import pymongo
+import time
 from Mongo import Mongo
+
 from Mira import Mira
 from Rigel import Rigel
 from Shared import settings
-import numpy
+import Helpers
 
 class Collector_MongoOps:
-    
+
     @staticmethod
     def setCurrentTerm(mongo, term):
         mongo.collection_collector.update_one(

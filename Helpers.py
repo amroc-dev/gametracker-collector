@@ -1,15 +1,5 @@
-# import os
-# import os.path
-# from os import path
 import time
 import sys
-# import requests
-# import json
-# import pymongo
-# from pymongo import MongoClient
-# import bson
-# from pprint import pprint
-# from tendo import singleton
 import colored
 
 coolUTF8 = "⚡⭐🌀💎💥"

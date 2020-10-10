@@ -6,28 +6,34 @@
 # If either of these two conditions are met, the game is deleted from the database
 #######################################################################
 
-import os
-import os.path
-from os import path
 import time
-import sys
 import requests
-import json
 import pymongo
-from pymongo import MongoClient
 import bson
-from pprint import pprint
-from tendo import singleton
-from Mongo import Mongo
-from Shared import settings
 from nested_lookup import nested_lookup
-from datetime import datetime
-import Helpers
-import colored
 import datetime
 
+from Mongo import Mongo
+from Shared import settings
+import Helpers
 
 class MongoValidator:
+    def __init__(self, mongo):
+        self.logger = Helpers.Logger(__class__.__name__, Helpers.mongoLogColor)
+        self.mongo = mongo
+
+    def start(self):
+        while True:
+            t = time.time()
+            result = self.update()
+            if False == result:
+                break
+
+            sleepTime = settings.mongoValidator.updateInterval - (time.time() - t)
+            if sleepTime > 0:
+                time.sleep(sleepTime)
+
+        self.logger.log("All games up to date")
 
     def hasInAppPurchases(self, metaResult):
         # check if app has in app purchases or not
@@ -62,7 +68,7 @@ class MongoValidator:
             # logger.log(result["trackName"] + ": " + result["searchBlob"]["releaseDate"])
             trackIds.append(result["searchBlob"]["trackId"])
 
-        mongo.logger.log("Collected " + str(len(trackIds)))
+        self.logger.log("Collected " + str(len(trackIds)))
 
         if (len(trackIds) == 0):
             return False
@@ -73,12 +79,12 @@ class MongoValidator:
             trackIdRequestList = trackIdRequestList + str(trackId) + ","
         trackIdRequestList = trackIdRequestList[:-1]
 
-        mongo.logger.log(" iTunes lookup...")
+        self.logger.log(" iTunes lookup...")
         try:
             lookupResponse = requests.get(
                 settings.rigel.lookupURL_base.replace("__ID__", trackIdRequestList, 1))
         except requests.exceptions.RequestException as e:
-            mongo.logger.log(e)
+            self.logger.log(e)
 
         resultCount = 0
         bulkUpdatesArray = []
@@ -87,7 +93,7 @@ class MongoValidator:
             jsonResponse = lookupResponse.json()
             metaResults = jsonResponse[settings.rigel.api_keys.results]
             resultCount = len(metaResults.values())
-            mongo.logger.log("Results: " + str(resultCount))
+            self.logger.log("Results: " + str(resultCount))
 
             dateNow = str(datetime.datetime.now())
 
@@ -104,7 +110,7 @@ class MongoValidator:
 
                     # if IAP is detected, delete the game
                     if self.hasInAppPurchases(metaResult):
-                        mongo.logger.log(
+                        self.logger.log(
                             "IAP detected for: " + trackName + " (" + str(trackId) + "), deleting...")
                         bulkUpdatesArray.append(pymongo.DeleteOne(
                             {'_id': bson.int64.Int64(trackId)}))
@@ -116,7 +122,7 @@ class MongoValidator:
 
             if len(bulkUpdatesArray) > 0:
                 dbResults = mongo.collection_games.bulk_write(bulkUpdatesArray)
-                mongo.logger.log("Databased updated. Modified: " + str(
+                self.logger.log("Databased updated. Modified: " + str(
                     dbResults.modified_count) + ", Deleted: " + str(dbResults.deleted_count))
 
         return True
@@ -124,16 +130,4 @@ class MongoValidator:
 
 if __name__ == '__main__':
     mongo = Mongo("MongoValidator")
-    mongoValidator = MongoValidator()
-
-    while True:
-        t = time.time()
-        result = mongoValidator.update()
-        if False == result:
-            break
-
-        sleepTime = settings.mongoValidator.updateInterval - (time.time() - t)
-        if sleepTime > 0:
-            time.sleep(sleepTime)
-
-    mongo.logger.log("All games up to date")
+    MongoValidator(mongo).start()
