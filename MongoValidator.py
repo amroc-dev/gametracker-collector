@@ -60,7 +60,7 @@ class MongoValidator:
                  [{dateValidatedKey: {"$exists": False}},
                   {dateValidatedKey: {"$lte": dateQuery}}]
                  }
-        results = mongo.collection_games.find(
+        results = self.mongo.collection_games.find(
             query, limit=settings.mongoValidator.lookupCount, sort=sortType)
 
         trackIds = []
@@ -121,7 +121,7 @@ class MongoValidator:
                         )
 
             if len(bulkUpdatesArray) > 0:
-                dbResults = mongo.collection_games.bulk_write(bulkUpdatesArray)
+                dbResults = self.mongo.collection_games.bulk_write(bulkUpdatesArray)
                 self.logger.log("Databased updated. Modified: " + str(
                     dbResults.modified_count) + ", Deleted: " + str(dbResults.deleted_count))
 

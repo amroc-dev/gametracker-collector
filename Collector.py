@@ -11,6 +11,7 @@ from Mira import Mira
 from Rigel import Rigel
 from Shared import settings
 import Helpers
+from MongoValidator import MongoValidator
 
 class Collector_MongoOps:
 
@@ -73,11 +74,13 @@ class Collector:
 
         self.setCurrentTerm(currentTerm)
         
-        running = True
-        while running :
+        while True :
             running = self.update()
-
-        self.logger.log("All terms finished")
+            if running == False:
+                self.logger.log("All terms finished")
+                MongoValidator(self.mongo).start()
+                self.logger.log("Restarting")
+                self.setCurrentTerm(terms[0])
 
     def setCurrentTerm(self, term):
         self.logger.log("Term: " + term)
