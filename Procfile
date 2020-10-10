@@ -1,1 +1,1 @@
-worker: python Collector.py
+worker: python Collector.py -nocolor

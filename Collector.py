@@ -138,6 +138,11 @@ class Collector:
             self.lastLogTime = self.currentTime
 
 if __name__ == '__main__':
+
+    for arg in sys.argv:
+        if arg.lower() == "-nocolor":
+            Helpers.Logger.useColor = False
+
     Collector().start()
 
 

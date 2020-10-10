@@ -5,15 +5,23 @@ import colored
 coolUTF8 = "⚡⭐🌀💎💥"
 
 class Logger:
+    useColor = True
+
     def __init__(self, header, color):
         self.header = header
         self.color = color
 
     def log(self, body):
-        print(colored.fg(self.color) + self.header + "   \t" + body + colored.attr('reset'))
+        if Logger.useColor:
+            print(colored.fg(self.color) + self.header + "   \t" + body + colored.attr('reset'))
+        else:
+            print(self.header + "   \t" + body)
 
     def highlight(self, str):
-        return (colored.attr('underlined') + str + colored.attr('res_underlined'))
+        if Logger.useColor:
+            return (colored.attr('underlined') + str + colored.attr('res_underlined'))
+        else:
+            return str
 
 class Sleeper:
     def __init__(self, sleepTime):
