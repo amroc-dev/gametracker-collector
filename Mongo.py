@@ -5,13 +5,13 @@ from Shared import settings
 import Helpers
 
 class Mongo:
-    def __init__(self):
+    def __init__(self, nameOverride="Mongo"):
         self.client = None
         self.database = None
         self.collection_games = None
         self.collection_games_meta = None
         self.collection_collector = None
-        self.logger = Helpers.Logger("Mongo", Helpers.mongoLogColor)
+        self.logger = Helpers.Logger(nameOverride, Helpers.mongoLogColor)
         self.connect()
 
     def connect(self):

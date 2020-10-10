@@ -11,26 +11,24 @@ import pymongo
 from pymongo.collation import Collation, CollationStrength
 from pymongo import MongoClient
 from pymongo import TEXT
-from Settings import mongoSettings
-from Settings import miraSettings
-from Settings import rigelSettings
-from Settings import mongoIndexNames
 from datetime import datetime
 import Helpers
+from Mongo import Mongo
+from Shared import settings
 import json
 from pprint import pprint
 
 def setup(indexes, indexName, createFunc):
     if indexName in indexes.keys():
-        logger.log("Index exists: " + indexName)
+        mongo.logger.log("Index exists: " + indexName)
         return False
     else:
-        logger.log("Creating index: " + indexName)
+        mongo.logger.log("Creating index: " + indexName)
         createFunc(indexName)
         return True
 
 def setupTextIndexes(indexName):
-    collection.create_index( 
+    mongo.collection_games.create_index( 
         [
             ("trackName", TEXT), 
             ("searchBlob.sellerName", TEXT),
@@ -44,56 +42,41 @@ def setupTextIndexes(indexName):
         name=indexName)
 
 def setupDeviceIndex(indexName):
-    collection.create_index("lookupBlob.deviceFamilies", name=indexName)
+    mongo.collection_games.create_index("lookupBlob.deviceFamilies", name=indexName)
 
 def setupReleaseDateIndex(indexName):
-    collection.create_index("lookupBlob.releaseDate", name=indexName)
+    mongo.collection_games.create_index("lookupBlob.releaseDate", name=indexName)
 
 def setupPriceIndex(indexName):
-    collection.create_index("searchBlob.price", name=indexName)
+    mongo.collection_games.create_index("searchBlob.price", name=indexName)
 
 def setupPopularityIndex(indexName):
-    collection.create_index("lookupBlob.userRating.ratingCount", name=indexName)
+    mongo.collection_games.create_index("lookupBlob.userRating.ratingCount", name=indexName)
 
 def setupMetaRankingIndex(indexName):
-    collection.create_index("metaRanking", name=indexName)
+    mongo.collection_games.create_index("metaRanking", name=indexName)
 
 if __name__ == '__main__':
-    logger = Helpers.Logger("MongoUpdateMeta", Helpers.mongoLogColor)
-    logger.log("Connecting to database")
-
-    client = None
-    database = None
-    gamesCollection = None
-    collectionMeta = None
-
-    try:
-        client = MongoClient(mongoSettings.CONNECTION_STRING())
-        database = client[mongoSettings.DATABASE_NAME()]
-        collection = database[mongoSettings.COLLECTION_NAME()]
-        collectionMeta = database[mongoSettings.COLLECTION_META_NAME()]
-        logger.log("Connection Ok")
-    except pymongo.errors.PyMongoError as e:
-        logger.log("Connection Failure: " + str(e))
-        sys.exit(1)
-
+    mongo = Mongo("MongoSetupIndexes")
+    
     # array of creation functions, in a tuple with the name of the index
+    indexNames = settings.mongo.indexNames.games
     creationFuncs = [
-        (mongoIndexNames.TEXT_INDEX(), setupTextIndexes),
-        (mongoIndexNames.DEVICE_FAMILIES_INDEX(), setupDeviceIndex),
-        (mongoIndexNames.RELEASE_DATE_INDEX(), setupReleaseDateIndex),
-        (mongoIndexNames.PRICE_INDEX(), setupPriceIndex),
-        (mongoIndexNames.POPULARITY_INDEX(), setupPopularityIndex),
-        (mongoIndexNames.METARANKING_INDEX(), setupMetaRankingIndex),
+        (indexNames.text, setupTextIndexes),
+        (indexNames.deviceFamilies, setupDeviceIndex),
+        (indexNames.releaseDate, setupReleaseDateIndex),
+        (indexNames.price, setupPriceIndex),
+        (indexNames.popularity, setupPopularityIndex),
+        (indexNames.metaRanking, setupMetaRankingIndex),
     ]
 
-    indexes = collection.index_information()
+    indexes = mongo.collection_games.index_information()
 
     # # delete all indexes
     # for func in creationFuncs:
     #     if func[0] in indexes.keys():
     #         logger.log("Deleting index: " + func[0])
-    #         collection.drop_index(func[0])
+    #         mongo.collection_games.drop_index(func[0])
 
     ## create all indexes if they don't already exist
     for func in creationFuncs:

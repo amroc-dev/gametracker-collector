@@ -11,7 +11,7 @@ from Mongo import Mongo
 from Shared import settings
 
 if __name__ == '__main__':
-    mongo = Mongo()
+    mongo = Mongo("MongoUploadTerms")
 
     fileName = Helpers.getWithExtension("steamTags", settings.collector.termsFileExtension)
     fullPath = settings.collector.termsDir + "/" + str(fileName)
