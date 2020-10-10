@@ -7,8 +7,8 @@ import os
 import os.path
 from os import path
 import Helpers
-from _Mongo import Mongo
-from _Shared import settings
+from Mongo import Mongo
+from Shared import settings
 
 if __name__ == '__main__':
     mongo = Mongo()

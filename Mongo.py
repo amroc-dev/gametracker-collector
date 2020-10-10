@@ -1,7 +1,7 @@
 
 import pymongo
 from pymongo import MongoClient
-from _Shared import settings
+from Shared import settings
 import Helpers
 
 class Mongo:

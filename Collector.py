@@ -14,10 +14,10 @@ from subprocess import Popen
 import colored
 import pymongo
 from pymongo import MongoClient
-from _Mongo import Mongo
-from _Mira import Mira
-from _Rigel import Rigel
-from _Shared import settings
+from Mongo import Mongo
+from Mira import Mira
+from Rigel import Rigel
+from Shared import settings
 import numpy
 
 class Collector:

@@ -22,7 +22,7 @@ import colored
 import random
 import Helpers
 import tldextract
-from _Shared import settings
+from Shared import settings
 
 
 class MiraResult:
