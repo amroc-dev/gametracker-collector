@@ -6,6 +6,7 @@
 # If either of these two conditions are met, the game is deleted from the database
 #######################################################################
 
+import sys
 import time
 import requests
 import pymongo
@@ -14,8 +15,9 @@ from nested_lookup import nested_lookup
 import datetime
 
 from Mongo import Mongo
-from Shared import settings
+from Shared import settings, hasTestArgs
 import Helpers
+
 
 class MongoValidator:
     def __init__(self, mongo):
@@ -81,8 +83,7 @@ class MongoValidator:
 
         self.logger.log(" iTunes lookup...")
         try:
-            lookupResponse = requests.get(
-                settings.rigel.lookupURL_base.replace("__ID__", trackIdRequestList, 1))
+            lookupResponse = requests.get(settings.rigel.lookupURL_base.replace("__ID__", trackIdRequestList, 1))
         except requests.exceptions.RequestException as e:
             self.logger.log(e)
 
@@ -100,8 +101,7 @@ class MongoValidator:
             # If iTunes returns no results for the current trackIds, then go ahead and delete them from the database
             if resultCount == 0:
                 for trackId in trackIds:
-                    bulkUpdatesArray.append(pymongo.DeleteOne(
-                        {'_id': bson.int64.Int64(trackId)}))
+                    bulkUpdatesArray.append(pymongo.DeleteOne({'_id': bson.int64.Int64(trackId)}))
             else:
                 for metaResult in metaResults.values():
                     trackId = metaResult[settings.rigel.api_keys.id]
@@ -112,22 +112,19 @@ class MongoValidator:
                     if self.hasInAppPurchases(metaResult):
                         self.logger.log(
                             "IAP detected for: " + trackName + " (" + str(trackId) + "), deleting...")
-                        bulkUpdatesArray.append(pymongo.DeleteOne(
-                            {'_id': bson.int64.Int64(trackId)}))
+                        bulkUpdatesArray.append(pymongo.DeleteOne({'_id': bson.int64.Int64(trackId)}))
                     # otherwise, update the date validated with the current date
                     else:
-                        bulkUpdatesArray.append(pymongo.UpdateOne(
-                            {'_id': bson.int64.Int64(trackId)}, {'$set': dateValidatedEntry}, upsert=True)
-                        )
+                        bulkUpdatesArray.append(pymongo.UpdateOne({'_id': bson.int64.Int64(trackId)}, {'$set': dateValidatedEntry}, upsert=True))
 
             if len(bulkUpdatesArray) > 0:
                 dbResults = self.mongo.collection_games.bulk_write(bulkUpdatesArray)
-                self.logger.log("Databased updated. Modified: " + str(
-                    dbResults.modified_count) + ", Deleted: " + str(dbResults.deleted_count))
+                self.logger.log("Databased updated. Modified: " + str(dbResults.modified_count) + ", Deleted: " + str(dbResults.deleted_count))
 
         return True
 
 
 if __name__ == '__main__':
     mongo = Mongo("MongoValidator")
+    mongo.connect(hasTestArgs(sys.argv))
     MongoValidator(mongo).start()

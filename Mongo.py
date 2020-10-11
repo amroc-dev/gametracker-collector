@@ -17,16 +17,23 @@ class Mongo:
         self.collection_games_meta = None
         self.collection_collector = None
         self.logger = Helpers.Logger(nameOverride, Helpers.mongoLogColor)
-        self.connect()
 
-    def connect(self):
-        self.logger.log("Connecting to database")
+    def connect_test(self):
+        self.connect(True)
+
+    def connect(self, useTestingCollections = False):
+        testString = "test" if useTestingCollections else "live"
+        self.logger.log("Connecting to " + testString + " database")
         try:
             self.client =  MongoClient(settings.mongo.connectionString)
             self.database = self.client[settings.mongo.databaseName]
-            self.collection_games = self.database[settings.mongo.collections.games]
-            self.collection_games_meta = self.database[settings.mongo.collections.gamesMeta]
-            self.collection_collector = self.database[settings.mongo.collections.collector]
+
+            testPrefix = settings.mongo.collections.testingPrefix if useTestingCollections else ""
+
+            self.collection_games = self.database[testPrefix + settings.mongo.collections.games]
+            self.collection_games_meta = self.database[testPrefix + settings.mongo.collections.gamesMeta]
+            self.collection_collector = self.database[testPrefix + settings.mongo.collections.collector]
+
             self.logger.log("Connection Ok")
         except pymongo.errors.PyMongoError as e:
             self.logger.log("Connection Failure: " + str(e))

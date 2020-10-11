@@ -3,9 +3,10 @@
 # Updates the Games_meta collection
 #######################################################################
 
+import sys
 import functools
 from Mongo import Mongo
-from Shared import settings
+from Shared import settings, hasTestArgs
 import Helpers
 
 class MongoUpdateMeta:
@@ -55,4 +56,5 @@ class MongoUpdateMeta:
 
 if __name__ == '__main__':
     mongo = Mongo()
+    mongo.connect(hasTestArgs(sys.argv))
     MongoUpdateMeta(mongo).start()

@@ -13,9 +13,9 @@ class Logger:
 
     def log(self, body):
         if Logger.useColor:
-            print(colored.fg(self.color) + self.header + "   \t" + body + colored.attr('reset'))
+            print(colored.fg(self.color) + self.header + " ... " + body + colored.attr('reset'))
         else:
-            print(self.header + "   \t" + body)
+            print(self.header + " ... " + body)
 
     def highlight(self, str):
         if Logger.useColor:

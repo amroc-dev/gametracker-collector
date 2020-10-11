@@ -3,10 +3,11 @@
 # Just a collection of tests/useful database operations
 #######################################################################
 
+import sys
 from pymongo import TEXT
 
 from Mongo import Mongo
-from Shared import settings
+from Shared import settings, hasTestArgs
 
 def setup(indexes, indexName, createFunc):
     if indexName in indexes.keys():
@@ -48,6 +49,7 @@ def setupMetaRankingIndex(indexName):
 
 if __name__ == '__main__':
     mongo = Mongo("MongoSetupIndexes")
+    mongo.connect(hasTestArgs(sys.argv))
 
     # array of creation functions, in a tuple with the name of the index
     indexNames = settings.mongo.indexNames.games

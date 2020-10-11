@@ -3,15 +3,17 @@
 # Upload search terms to the database for the collector to use
 #######################################################################
 
+import sys
 import pymongo
 from os import path
 
 from Mongo import Mongo
 import Helpers
-from Shared import settings
+from Shared import settings, hasTestArgs
 
 if __name__ == '__main__':
     mongo = Mongo("MongoUploadTerms")
+    mongo.connect(hasTestArgs(sys.argv))
 
     fileName = Helpers.getWithExtension("steamTags", settings.collector.termsFileExtension)
     fullPath = settings.collector.termsDir + "/" + str(fileName)
