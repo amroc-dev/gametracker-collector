@@ -21,7 +21,7 @@ class MiraResult:
 class Mira:
     def __init__(self):
         self.miraResults = []
-        self.logger = Helpers.Logger("Mira ", Helpers.miraLogColor)
+        self.logger = Helpers.Logger("Mira", Helpers.miraLogColor)
         self.logger.log("Starting")
         self.currentTerm = None
         self.offset = 0

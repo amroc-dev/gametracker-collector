@@ -6,16 +6,18 @@ coolUTF8 = "⚡⭐🌀💎💥"
 
 class Logger:
     useColor = True
+    spacing = 12
 
     def __init__(self, header, color):
-        self.header = header
+        self.header = (header[:self.spacing-3] + '..') if len(header) > self.spacing-3 else header
         self.color = color
+        self.indent = "".ljust(max(0, self.spacing - len(self.header)) )
 
     def log(self, body):
         if Logger.useColor:
-            print(colored.fg(self.color) + self.header + " ... " + body + colored.attr('reset'))
+            print(colored.fg(self.color) + self.header + self.indent + body + colored.attr('reset'))
         else:
-            print(self.header + " ... " + body)
+            print(self.header + self.indent + body)
 
     def highlight(self, str):
         if Logger.useColor:
