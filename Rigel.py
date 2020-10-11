@@ -156,7 +156,7 @@ class Rigel:
         requestString = str(len(miraResultsChunk))
         if len(self.miraResults) > len(miraResultsChunk):
             requestString = requestString + " of " + str(len(self.miraResults))
-        self.logger.log(" iTunes lookup: requesting: " + requestString)
+        self.logger.log(" lookup: " + requestString)
         try:
             lookupResponse = requests.get(settings.rigel.lookupURL_base.replace("__ID__", trackIdRequestList, 1), timeout=10)
         except requests.exceptions.RequestException as e:

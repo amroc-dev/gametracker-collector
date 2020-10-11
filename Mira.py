@@ -69,7 +69,7 @@ class Mira:
         searchURL = searchURL.replace("__LIMIT__", str(settings.mira.limit), 1)
         searchURL = searchURL.replace("__OFFSET__", str(self.offset), 1)
 
-        itunesSearchLogString = " iTunes search: term:" + \
+        itunesSearchLogString = " search: term:" + \
             self.logger.highlight(self.currentTerm) + \
             ", offset:" + str(self.offset)
         self.logger.log(itunesSearchLogString)
