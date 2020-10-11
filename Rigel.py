@@ -192,10 +192,8 @@ class Rigel:
                 if self.hasInAppPurchases(lookupBlob):
                     continue
 
-                userRating = nested_lookup(
-                    key=settings.rigel.api_keys.userRating, document=lookupBlob)
-                ratingCount = nested_lookup(
-                    key=settings.rigel.api_keys.ratingCount, document=userRating)
+                userRating = nested_lookup(key=settings.rigel.api_keys.userRating, document=lookupBlob)
+                ratingCount = nested_lookup(key=settings.rigel.api_keys.ratingCount, document=userRating)
 
                 # double check the app has enough ratings to be considered (occasionally some apps coming from the search don't have a review count field)
                 if int(ratingCount[0]) < settings.mira.minRatings:
