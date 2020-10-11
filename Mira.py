@@ -69,7 +69,7 @@ class Mira:
         searchURL = searchURL.replace("__LIMIT__", str(settings.mira.limit), 1)
         searchURL = searchURL.replace("__OFFSET__", str(self.offset), 1)
 
-        itunesSearchLogString = " iTunes search... term:" + \
+        itunesSearchLogString = " iTunes search: term:" + \
             self.logger.highlight(self.currentTerm) + \
             ", offset:" + str(self.offset)
         self.logger.log(itunesSearchLogString)
@@ -89,7 +89,7 @@ class Mira:
 
             resultCount = jsonResponse[settings.mira.api_keys.resultCount]
             results = jsonResponse[settings.mira.api_keys.results]
-            self.logger.log("Results: " + str(resultCount))
+            # self.logger.log("Results: " + str(resultCount))
 
             if resultCount < settings.mira.minResults:
                 self.logger.log(
@@ -122,7 +122,7 @@ class Mira:
                 self.exhaustedSearchCount = 0
                 for match in matchedResults:
                     self.miraResults.append(MiraResult(match))
-                self.logger.log("Buffer size: " + str(len(self.miraResults)))
+                # self.logger.log("Buffer size: " + str(len(self.miraResults)))
         else:
             self.logger.log(
                 "Search request failed with status code:" + str(response.status_code))

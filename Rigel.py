@@ -67,10 +67,8 @@ class MongoWriter:
         for appEntry in appEntries:
             self.addEntryToBulkUpdates(appEntry, bulkUpdates)
         try:
-            results = self.mongo.collection_games.bulk_write(
-                bulkUpdates)
-            self.mongo.logger.log("Databased updated. Added: " + str(results.upserted_count) +
-                                         ", modified: " + str(results.modified_count))
+            results = self.mongo.collection_games.bulk_write(bulkUpdates)
+            self.mongo.logger.log("Added: " + str(results.upserted_count) + ", modified: " + str(results.modified_count))
         except pymongo.errors.PyMongoError as e:
             self.mongo.log("bulk_write error: " + str(e))
             return False
@@ -158,10 +156,9 @@ class Rigel:
         requestString = str(len(miraResultsChunk))
         if len(self.miraResults) > len(miraResultsChunk):
             requestString = requestString + " of " + str(len(self.miraResults))
-        self.logger.log(" iTunes lookup... requesting: " + requestString)
+        self.logger.log(" iTunes lookup: requesting: " + requestString)
         try:
-            lookupResponse = requests.get(settings.rigel.lookupURL_base.replace(
-                "__ID__", trackIdRequestList, 1), timeout=10)
+            lookupResponse = requests.get(settings.rigel.lookupURL_base.replace("__ID__", trackIdRequestList, 1), timeout=10)
         except requests.exceptions.RequestException as e:
             self.logger.log(str(e))
             return
@@ -214,21 +211,17 @@ class Rigel:
 
                 # this should never happen
                 if matchingSearchBlob == None:
-                    self.logger.log(
-                        "Warning, lookup returned a trackId that wasn't requested!?")
+                    self.logger.log("Warning, lookup returned a trackId that wasn't requested!?")
 
-                appEntriesOUT.append(
-                    AppEntry(searchTerm, matchingSearchBlob, lookupBlob))
+                appEntriesOUT.append(AppEntry(searchTerm, matchingSearchBlob, lookupBlob))
 
-            self.logger.log("Results: " + str(resultCount) + ", matches: " + str(len(appEntriesOUT)))
+            # self.logger.log("Results: " + str(resultCount) + ", matches: " + str(len(appEntriesOUT)))
         else:
-            self.logger.log(
-                "Lookup request failed with status code:" + str(lookupResponse.status_code))
+            self.logger.log("Lookup request failed with status code:" + str(lookupResponse.status_code))
 
     def hasInAppPurchases(self, lookupBlob):
         # check if app has in app purchases or not
-        inAppResults = nested_lookup(
-            key=settings.rigel.api_keys.hasInAppPurchases, document=lookupBlob)
+        inAppResults = nested_lookup(key=settings.rigel.api_keys.hasInAppPurchases, document=lookupBlob)
         hasInApp = False
         if isinstance(inAppResults, list) and len(inAppResults) > 0:
             hasInApp = True
