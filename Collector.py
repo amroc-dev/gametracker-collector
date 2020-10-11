@@ -11,9 +11,8 @@ from Mira import Mira
 from Rigel import Rigel
 from Shared import settings, hasTestArgs
 import Helpers
-from MongoValidator import MongoValidator
-from MongoUpdateMeta import MongoUpdateMeta
-
+from GameValidator import GameValidator
+from UpdateGamesMeta import UpdateGamesMeta
 
 class Collector_MongoOps:
 
@@ -84,8 +83,8 @@ class Collector:
                 self.logger.log("All terms finished")
 
                 # after all terms complete, run some meta data operations
-                MongoValidator(self.mongo).start()
-                MongoUpdateMeta(self.mongo).start()
+                GameValidator(self.mongo).start()
+                UpdateGamesMeta(self.mongo).start()
 
                 self.logger.log("Restarting")
                 self.setCurrentTerm(terms[0])
@@ -145,7 +144,7 @@ class Collector:
             totalDiff = self.currentTime - self.collecterStartTime
             hours, rem = divmod(totalDiff, 3600)
             minutes, seconds = divmod(rem, 60)
-            self.logger.log("Hrs:{:0>2} Mins:{:0>2} Secs:{:02.0f}".format(
+            self.logger.log("{:0>2}:{:0>2}:{:02.0f}".format(
                 int(hours), int(minutes), int(seconds)))
             self.lastLogTime = self.currentTime
 

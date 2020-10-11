@@ -1,5 +1,5 @@
 #######################################################################
-# MongoUpdateMeta
+# UpdateGamesMeta
 # Updates the Games_meta collection
 #######################################################################
 
@@ -9,7 +9,7 @@ from Mongo import Mongo
 from Shared import settings, hasTestArgs
 import Helpers
 
-class MongoUpdateMeta:
+class UpdateGamesMeta:
     def __init__(self, mongo):
         self.logger = Helpers.Logger(__class__.__name__, Helpers.mongoLogColor)
         self.mongo = mongo
@@ -57,4 +57,4 @@ class MongoUpdateMeta:
 if __name__ == '__main__':
     mongo = Mongo()
     mongo.connect(hasTestArgs(sys.argv))
-    MongoUpdateMeta(mongo).start()
+    UpdateGamesMeta(mongo).start()

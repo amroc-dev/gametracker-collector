@@ -12,7 +12,7 @@ import Helpers
 from Shared import settings, hasTestArgs
 
 if __name__ == '__main__':
-    mongo = Mongo("MongoUploadTerms")
+    mongo = Mongo("UploadCollectorTerms")
     mongo.connect(hasTestArgs(sys.argv))
 
     fileName = Helpers.getWithExtension("steamTags", settings.collector.termsFileExtension)

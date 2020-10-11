@@ -19,7 +19,7 @@ from Shared import settings, hasTestArgs
 import Helpers
 
 
-class MongoValidator:
+class GameValidator:
     def __init__(self, mongo):
         self.logger = Helpers.Logger(__class__.__name__, Helpers.mongoLogColor)
         self.mongo = mongo
@@ -31,7 +31,7 @@ class MongoValidator:
             if False == result:
                 break
 
-            sleepTime = settings.mongoValidator.updateInterval - (time.time() - t)
+            sleepTime = settings.gameValidator.updateInterval - (time.time() - t)
             if sleepTime > 0:
                 time.sleep(sleepTime)
 
@@ -52,7 +52,7 @@ class MongoValidator:
         return hasInApp
 
     def update(self):
-        dateValidatedKey = settings.mongoValidator.db_keys.dateValidated
+        dateValidatedKey = settings.gameValidator.db_keys.dateValidated
         sortType = [(dateValidatedKey, -1)]
         # query = {"dateValidated" : {"$lte": dateQuery}}
         # query = {"$or" : [{"trackName": "Kiwanuka"}, {"trackName": "Downwell"}]}
@@ -63,7 +63,7 @@ class MongoValidator:
                   {dateValidatedKey: {"$lte": dateQuery}}]
                  }
         results = self.mongo.collection_games.find(
-            query, limit=settings.mongoValidator.lookupCount, sort=sortType)
+            query, limit=settings.gameValidator.lookupCount, sort=sortType)
 
         trackIds = []
         for result in results:
@@ -125,6 +125,6 @@ class MongoValidator:
 
 
 if __name__ == '__main__':
-    mongo = Mongo("MongoValidator")
+    mongo = Mongo("GameValidator")
     mongo.connect(hasTestArgs(sys.argv))
-    MongoValidator(mongo).start()
+    GameValidator(mongo).start()

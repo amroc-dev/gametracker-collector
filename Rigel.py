@@ -83,7 +83,7 @@ class MongoWriter:
             settings.rigel.db_keys.metaRanking: appEntry.metaRanking,
             settings.rigel.db_keys.searchBlob: appEntry.searchBlob,
             settings.rigel.db_keys.lookupBlob: appEntry.lookupBlob,
-            settings.mongoValidator.db_keys.dateValidated: dateNow,
+            settings.gameValidator.db_keys.dateValidated: dateNow,
         }
 
         # the db update operation for a game entry
