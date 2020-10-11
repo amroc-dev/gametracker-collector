@@ -126,7 +126,7 @@ class Rigel:
 
     def update(self, searchTerm):
         if len(self.miraResults) == 0:
-            self.logger.log("Waiting...")
+            # self.logger.log("Waiting...")
             return
 
         chunkOfResults = self.miraResults[0:settings.mira.limit]

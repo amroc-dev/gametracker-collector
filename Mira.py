@@ -55,7 +55,7 @@ class Mira:
             self.searchOngoing = False
 
         if self.searchOngoing == False:
-            self.logger.log("Waiting for new term...")
+            # self.logger.log("Waiting for new term...")
             return
 
         status = self._update()
