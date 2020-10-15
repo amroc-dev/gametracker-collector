@@ -22,12 +22,12 @@ def setupTextIndexes(indexName):
     mongo.collection_games.create_index( 
         [
             ("trackName", TEXT), 
-            ("searchBlob.sellerName", TEXT),
+            ("searchBlob.artistName", TEXT),
             ("tags", TEXT)
         ],
         weights={
             "trackName": 2,
-            "searchBlob.sellerName": 2,
+            "searchBlob.artistName": 2,
             "tags": 1
         },
         name=indexName)
