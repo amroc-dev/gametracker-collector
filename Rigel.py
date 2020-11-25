@@ -16,7 +16,6 @@ import datetime
 import math
 import pymongo
 import bson
-import numpy
 
 from Mongo import Mongo
 from Shared import settings
@@ -35,9 +34,8 @@ class AppEntry:
     # The game's user rating (lookupBlob.userRating.value)
     # algorithm from: https://steamdb.info/blog/steamdb-rating/
     def calcRanking(self):
-        userRatingField = self.lookupBlob["userRating"]
-        ratingCount = userRatingField["ratingCount"]
-        rating = userRatingField["value"]
+        ratingCount = self.lookupBlob["userRating"]["ratingCount"]
+        rating = self.searchBlob["averageUserRating"]
         normRating = rating / 5.0
         return normRating - (normRating - 0.5) * pow(2, -math.log10(ratingCount + 1))
 
@@ -113,7 +111,7 @@ class Rigel:
     def removeFromMiraResults(self, trackId):
         idx = 0
         for entry in self.miraResults:
-            if numpy.int64(trackId) == numpy.int64(entry.trackId):
+            if str(trackId) == str(entry.trackId):
                 self.miraResults.pop(idx)
                 return
             idx = idx + 1

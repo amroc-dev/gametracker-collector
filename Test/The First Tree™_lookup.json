@@ -1,0 +1,167 @@
+{
+    "results": {
+        "1524841987": {
+            "artwork": {
+                "width": 1024,
+                "url": "https://is4-ssl.mzstatic.com/image/thumb/Purple114/v4/0c/30/92/0c309223-6919-a6da-8e31-7be687a3cb2e/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/{w}x{h}bb.{f}",
+                "height": 1024,
+                "textColor3": "1a2e20",
+                "textColor2": "172225",
+                "textColor4": "203e37",
+                "hasAlpha": false,
+                "textColor1": "0f0d08",
+                "bgColor": "44b082",
+                "hasP3": false,
+                "supportsLayeredImage": false
+            },
+            "artistName": "David Wehle",
+            "url": "https://apps.apple.com/us/app/the-first-tree/id1524841987",
+            "shortUrl": "https://apps.apple.com/us/app/the-first-tree/id1524841987",
+            "softwareInfo": {
+                "seller": "David Wehle",
+                "languagesDisplayString": "English, French, German, Italian, Japanese, Korean, Portuguese, Russian, Simplified Chinese, Spanish, Traditional Chinese",
+                "requirementsString": "Requires iOS 10.0 or later. Compatible with iPhone, iPad, and iPod touch.",
+                "eulaUrl": null,
+                "supportUrl": "http://www.thefirsttree.com/",
+                "websiteUrl": null,
+                "privacyPolicyUrl": "http://www.thefirsttree.com/privacy-policy/",
+                "privacyPolicyTextUrl": null
+            },
+            "hasPrimaryArtist": true,
+            "deviceFamilies": [
+                "iphone",
+                "ipad",
+                "ipod"
+            ],
+            "genreNames": [
+                "Games",
+                "Family",
+                "Adventure"
+            ],
+            "itunesNotes": {
+                "tagline": "Reunite a fox and family"
+            },
+            "whatsNew": "Thanks for playing The First Tree! I updated the language info in the App Store. Subtitles are available in English, Spanish, French, Italian, German, Portuguese, Russian, Japanese, Chinese (Simplified and Traditional), and Korean.",
+            "nameSortValue": "TheFirstTree™",
+            "id": "1524841987",
+            "releaseDate": "2020-11-18",
+            "userRating": {
+                "value": 5,
+                "ratingCount": 45,
+                "valueCurrentVersion": 5,
+                "ratingCountCurrentVersion": 45
+            },
+            "contentRatingsBySystem": {
+                "appsApple": {
+                    "name": "12+",
+                    "value": 300,
+                    "rank": 3,
+                    "advisories": [
+                        "Infrequent/Mild Alcohol, Tobacco, or Drug Use or References",
+                        "Infrequent/Mild Cartoon or Fantasy Violence",
+                        "Infrequent/Mild Profanity or Crude Humor"
+                    ]
+                }
+            },
+            "name": "The First Tree™",
+            "artistUrl": "https://apps.apple.com/us/developer/david-wehle/id1524841989",
+            "nameRaw": "The First Tree™",
+            "editorialArtwork": {
+                "subscriptionHero": {
+                    "width": 4320,
+                    "url": "https://is5-ssl.mzstatic.com/image/thumb/Features124/v4/14/39/ab/1439ab7f-bd05-6680-4d0f-70119968e172/source/{w}x{h}{c}.{f}",
+                    "height": 1080,
+                    "textColor3": "81cdae",
+                    "textColor2": "aeedb5",
+                    "textColor4": "89bf95",
+                    "hasAlpha": false,
+                    "textColor1": "a3ffd5",
+                    "bgColor": "13272a",
+                    "hasP3": false,
+                    "supportsLayeredImage": false
+                },
+                "brandLogo": {
+                    "width": 1080,
+                    "url": "https://is4-ssl.mzstatic.com/image/thumb/Features113/v4/e2/1f/aa/e21faa3a-dc1b-66f5-b8cd-6716fe0e8aa7/source/{w}x{h}{c}.{f}",
+                    "height": 1080,
+                    "textColor3": "c1c1c1",
+                    "textColor2": "e5e5e5",
+                    "textColor4": "b7b7b7",
+                    "hasAlpha": true,
+                    "textColor1": "f2f2f2",
+                    "bgColor": "000000",
+                    "hasP3": false,
+                    "supportsLayeredImage": false
+                }
+            },
+            "subtitle": "A beautiful fox adventure game",
+            "bundleId": "com.davidwehle.thefirsttree",
+            "isVppDeviceBasedLicensingEnabled": true,
+            "kind": "iosSoftware",
+            "copyright": "© 2017 David Wehle, LLC",
+            "latestVersionReleaseDate": "Nov 18, 2020",
+            "artistId": "1524841989",
+            "genres": [
+                {
+                    "genreId": "6014",
+                    "name": "Games",
+                    "url": "https://itunes.apple.com/us/genre/id6014",
+                    "mediaType": "8"
+                },
+                {
+                    "genreId": "7009",
+                    "name": "Family",
+                    "url": "https://itunes.apple.com/us/genre/id7009",
+                    "mediaType": "8"
+                },
+                {
+                    "genreId": "7002",
+                    "name": "Adventure",
+                    "url": "https://itunes.apple.com/us/genre/id7002",
+                    "mediaType": "8"
+                }
+            ],
+            "minimumOSVersion": "10.0",
+            "description": {
+                "standard": "The First Tree is a third-person exploration game centered around two parallel stories: a fox trying to find her missing family, and a son reconnecting with his estranged father in Alaska. Players take control of the fox on a poignant and beautiful journey that crescendos at the source of life, and perhaps result in an understanding of death. Along the way, players can uncover artifacts and stories from the son's life as he becomes intertwined in the fox’s journey towards The First Tree.\r\n\nFeatures:\r\n• Not a \"fox simulator,\" but an emotional, intimate story by a one-man team with an ending you won't soon forget.\r\n\n• Featuring a gorgeous, orchestral soundtrack by acclaimed artists like Message to Bears, Lowercase Noises, and Josh Kramer.\r\n\n• A short story-driven game (about 2 hours long) with some light puzzle solving, platforming, and no enemies."
+            },
+            "requiredCapabilities": "armv7 ",
+            "offers": [
+                {
+                    "actionText": {
+                        "short": "Buy",
+                        "medium": "Buy",
+                        "long": "Buy App",
+                        "downloaded": "Installed",
+                        "downloading": "Installing"
+                    },
+                    "type": "buy",
+                    "priceFormatted": "$4.99",
+                    "price": 4.99,
+                    "buyParams": "productType=C&price=4990&salableAdamId=1524841987&pricingParameters=STDQ&pg=default&marketType=ENT&appExtVrsId=839234538",
+                    "version": {
+                        "display": "1.3",
+                        "externalId": 839234538
+                    },
+                    "assets": [
+                        {
+                            "flavor": "iosSoftware",
+                            "size": 1085115392
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "version": 2,
+    "isAuthenticated": false,
+    "meta": {
+        "storefront": {
+            "id": "143441",
+            "cc": "US"
+        },
+        "language": {
+            "tag": "en-us"
+        }
+    }
+}

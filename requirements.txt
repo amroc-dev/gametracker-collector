@@ -1,7 +1,6 @@
-python_box==5.1.1
-requests==2.24.0
-colored==1.4.2
-numpy==1.19.2
 nested_lookup==0.2.21
+python_box==5.1.1
+colored==1.4.2
+requests==2.24.0
 pymongo[srv]==3.11.0
 PyYAML==5.3.1
