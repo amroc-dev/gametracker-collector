@@ -44,6 +44,9 @@ def setupPriceIndex(indexName):
 def setupPopularityIndex(indexName):
     mongo.collection_games.create_index("lookupBlob.userRating.ratingCount", name=indexName)
 
+def setupRatingIndex(indexName):
+    mongo.collection_games.create_index("searchBlob.averageUserRating", name=indexName)
+
 def setupMetaRankingIndex(indexName):
     mongo.collection_games.create_index("metaRanking", name=indexName)
 
@@ -59,6 +62,7 @@ if __name__ == '__main__':
         (indexNames.releaseDate, setupReleaseDateIndex),
         (indexNames.price, setupPriceIndex),
         (indexNames.popularity, setupPopularityIndex),
+        (indexNames.rating, setupRatingIndex),
         (indexNames.metaRanking, setupMetaRankingIndex),
     ]
 
