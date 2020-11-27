@@ -83,7 +83,7 @@ class UpdateGamesMeta:
                 if count != intervals[0]:
                     intervals.insert(0, count)
                     currentSize = 0
-                    if count == 4:
+                    if count == 5:
                         break
 
         self.logger.log("Processed " + str(len(intervals)) + " intervals")
