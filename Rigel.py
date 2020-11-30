@@ -21,23 +21,22 @@ from Mongo import Mongo
 from Shared import settings
 import Helpers
 
+# MetaRanking is a ranking caluculated from a combination of:
+# The game's popularity (lookupBlob.userRating.ratingCount), and:
+# The game's user rating (lookupBlob.userRating.value)
+# algorithm from: https://steamdb.info/blog/steamdb-rating/
+def calcMetaRanking(ratingCount, rating):
+    normRating = rating / 5.0
+    logBase = 5
+    return normRating - (normRating - 0.5) * pow(2, -math.log(ratingCount + 1, logBase))
+
 class AppEntry:
     def __init__(self, searchTerm, searchBlob, lookupBlob):
         self.tags = self.getGenreList(searchTerm, lookupBlob)
         self.searchBlob = searchBlob
         self.lookupBlob = lookupBlob
-        self.metaRanking = self.calcRanking()
+        self.metaRanking = calcMetaRanking(self.lookupBlob["userRating"]["ratingCount"], self.lookupBlob["userRating"]["value"])
         self.trackId = searchBlob[settings.mira.api_keys.trackId]
-
-    # MetaRanking is a ranking caluculated from a combination of:
-    # The game's popularity (lookupBlob.userRating.ratingCount), and:
-    # The game's user rating (lookupBlob.userRating.value)
-    # algorithm from: https://steamdb.info/blog/steamdb-rating/
-    def calcRanking(self):
-        ratingCount = self.lookupBlob["userRating"]["ratingCount"]
-        rating = self.searchBlob["averageUserRating"]
-        normRating = rating / 5.0
-        return normRating - (normRating - 0.5) * pow(2, -math.log10(ratingCount + 1))
 
     def getGenreList(self, searchTerm, lookupBlob):
         genreList = []
