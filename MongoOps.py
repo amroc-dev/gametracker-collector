@@ -6,10 +6,12 @@
 
 import sys
 import pymongo
+import click
 from os import path
 
 from Mongo import Mongo
 import Helpers
+from Helpers import objectKeyFromDotString
 from Shared import settings, hasTestArgs
 
 def clearAll(mongo):
@@ -34,6 +36,10 @@ def clearGames_meta(mongo):
     mongo.collection_games_meta.delete_many({})
     mongo.logger.log("Done.")
 
+# def updateMetaRankings(mongo):
+#     POPULARITY_FIELD = 'lookupBlob.userRating.ratingCount'
+#     results = self.mongo.collection_games.find({}, projection={POPULARITY_FIELD: True})
+
 # def clonegames():
 #     cleartest_games()
 #     cleartest_games_meta()
@@ -43,9 +49,6 @@ def clearGames_meta(mongo):
 #     testGamesCollection = settings.mongo.collections.testingPrefix + settings.mongo.collections.games
 #     mongo.collection_games.aggregate([ { '$match': {} }, { '$out': testGamesCollection } ])
 #     mongo.logger.log("Done.")
-
-# def updateMetaRankings():
-
 
 if __name__ == '__main__':
 
@@ -58,6 +61,9 @@ if __name__ == '__main__':
 
     mongo = Mongo("MongoOps")
     mongo.connect(testDB)
+
+    if not click.confirm('Continue?', default=True):
+        sys.exit(1)
     
     if "-clearAll" in sys.argv:
         clearAll(mongo)
@@ -75,32 +81,6 @@ if __name__ == '__main__':
         clearGames_meta(mongo)
         sys.exit(1)
 
-    
-
-    # for arg in sys.argv:
-    #     if arg.lower() == "-cleartest":
-    #         clearTest()
-    #         sys.exit(1)
-
-    #     if arg.lower() == "-cleartest_collector":
-    #         cleartest_collector()
-    #         sys.exit(1)
-
-    #     if arg.lower() == "-cleartest_games":
-    #         cleartest_games()
-    #         sys.exit(1)
-
-    #     if arg.lower() == "-cleartest_games_meta":
-    #         cleartest_games_meta()
-    #         sys.exit(1)
-
-    #     if arg.lower() == "-clonegames":
-    #         clonegames()
-    #         sys.exit(1)
-
-    #     if arg.lower() == "-updateMetaRankings":
-
-    
     print("No args... exiting")
 
 

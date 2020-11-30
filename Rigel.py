@@ -20,6 +20,7 @@ import bson
 from Mongo import Mongo
 from Shared import settings
 import Helpers
+from Helpers import objectKeyFromDotString
 
 # MetaRanking is a ranking caluculated from a combination of:
 # The game's popularity (lookupBlob.userRating.ratingCount), and:
@@ -27,15 +28,17 @@ import Helpers
 # algorithm from: https://steamdb.info/blog/steamdb-rating/
 def calcMetaRanking(ratingCount, rating):
     normRating = rating / 5.0
-    logBase = 5
-    return normRating - (normRating - 0.5) * pow(2, -math.log(ratingCount + 1, logBase))
+    return normRating - (normRating - 0.5) * pow(2, -math.log10(ratingCount + 1))
 
 class AppEntry:
     def __init__(self, searchTerm, searchBlob, lookupBlob):
         self.tags = self.getGenreList(searchTerm, lookupBlob)
         self.searchBlob = searchBlob
         self.lookupBlob = lookupBlob
-        self.metaRanking = calcMetaRanking(self.lookupBlob["userRating"]["ratingCount"], self.lookupBlob["userRating"]["value"])
+
+        ratingCount = objectKeyFromDotString(self.lookupBlob, settings.rigel.db_keys.ratingCount)
+        rating = objectKeyFromDotString(self.lookupBlob, settings.rigel.db_keys.rating)
+        self.metaRanking = calcMetaRanking(ratingCount, rating)
         self.trackId = searchBlob[settings.mira.api_keys.trackId]
 
     def getGenreList(self, searchTerm, lookupBlob):

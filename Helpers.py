@@ -45,6 +45,13 @@ def getWithExtension(fileName, extension):
     else:
         return fileName
 
+def objectKeyFromDotString( obj, key ):
+    parts = key.split( "." )
+    prop = obj
+    for i in range(0, len(parts)):
+        prop = prop[parts[i]];
+    return prop;
+
 def makeProgressBar(val, pips = 20):
     barFill = "▰"
     barEmpty = "-"
