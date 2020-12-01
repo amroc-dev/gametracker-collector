@@ -13,6 +13,7 @@ from Mongo import Mongo
 import Helpers
 from Helpers import objectKeyFromDotString
 from Shared import settings, hasTestArgs
+from Rigel import calcMetaRanking
 
 def clearAll(mongo):
     mongo.logger.log("Clearing all collections ...")
@@ -36,9 +37,22 @@ def clearGames_meta(mongo):
     mongo.collection_games_meta.delete_many({})
     mongo.logger.log("Done.")
 
-# def updateMetaRankings(mongo):
-#     POPULARITY_FIELD = 'lookupBlob.userRating.ratingCount'
-#     results = self.mongo.collection_games.find({}, projection={POPULARITY_FIELD: True})
+def updateMetaRankings(mongo):
+    mongo.logger.log("Updating meta rankings...")
+    ratingCountCurrentVersion_field = 'lookupBlob.' + settings.rigel.db_keys.ratingCountCurrentVersion
+    ratingCurrentVersion_field = 'searchBlob.' + settings.rigel.db_keys.ratingCurrentVersion
+    results = mongo.collection_games.find({}, projection={ratingCountCurrentVersion_field: True, ratingCurrentVersion_field: True})
+
+    bulkUpdates = []
+
+    for result in results:
+        ratingCountCurrentVersion = objectKeyFromDotString(result, ratingCountCurrentVersion_field)
+        ratingCurrentVersion = objectKeyFromDotString(result, ratingCurrentVersion_field)
+        metaRanking = calcMetaRanking(ratingCountCurrentVersion, ratingCurrentVersion)
+        bulkUpdates.append(pymongo.UpdateOne({'_id': result['_id']}, {'$set' : {settings.rigel.db_keys.metaRanking: metaRanking}}, upsert=True))
+
+    updateResults = mongo.collection_games.bulk_write(bulkUpdates)
+    mongo.logger.log("Updated: " + str(updateResults.modified_count))
 
 # def clonegames():
 #     cleartest_games()
@@ -79,6 +93,10 @@ if __name__ == '__main__':
 
     if "-clearGames_meta" in sys.argv:
         clearGames_meta(mongo)
+        sys.exit(1)
+    
+    if "-updateMetaRankings" in sys.argv:
+        updateMetaRankings(mongo)
         sys.exit(1)
 
     print("No args... exiting")

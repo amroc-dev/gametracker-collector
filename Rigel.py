@@ -28,7 +28,8 @@ from Helpers import objectKeyFromDotString
 # algorithm from: https://steamdb.info/blog/steamdb-rating/
 def calcMetaRanking(ratingCount, rating):
     normRating = rating / 5.0
-    return normRating - (normRating - 0.5) * pow(2, -math.log10(ratingCount + 1))
+    logBase = 10
+    return normRating - (normRating - 0.5) * pow(2, -math.log(ratingCount + 1, logBase))
 
 class AppEntry:
     def __init__(self, searchTerm, searchBlob, lookupBlob):
@@ -36,9 +37,9 @@ class AppEntry:
         self.searchBlob = searchBlob
         self.lookupBlob = lookupBlob
 
-        ratingCount = objectKeyFromDotString(self.lookupBlob, settings.rigel.db_keys.ratingCount)
-        rating = objectKeyFromDotString(self.lookupBlob, settings.rigel.db_keys.rating)
-        self.metaRanking = calcMetaRanking(ratingCount, rating)
+        ratingCountCurrentVersion = objectKeyFromDotString(self.lookupBlob, settings.rigel.db_keys.ratingCountCurrentVersion)
+        ratingCurrentVersion = objectKeyFromDotString(self.searchBlob, settings.rigel.db_keys.ratingCurrentVersion)
+        self.metaRanking = calcMetaRanking(ratingCountCurrentVersion, ratingCurrentVersion)
         self.trackId = searchBlob[settings.mira.api_keys.trackId]
 
     def getGenreList(self, searchTerm, lookupBlob):
