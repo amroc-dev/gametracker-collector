@@ -32,22 +32,28 @@ def setupTextIndexes(indexName):
         },
         name=indexName)
 
-def setupDeviceIndex(indexName):
-    mongo.collection_games.create_index("lookupBlob.deviceFamilies", name=indexName)
-
-def setupReleaseDateIndex(indexName):
-    mongo.collection_games.create_index("lookupBlob.releaseDate", name=indexName)
-
-def setupPriceIndex(indexName):
-    mongo.collection_games.create_index("searchBlob.price", name=indexName)
-
-def setupPopularityIndex(indexName):
+def setupPopularity(indexName):
     mongo.collection_games.create_index("lookupBlob.userRating.ratingCount", name=indexName)
 
-def setupRatingIndex(indexName):
-    mongo.collection_games.create_index("searchBlob.averageUserRating", name=indexName)
+def setupRatingCountCurrentVersion(indexName):
+    mongo.collection_games.create_index("lookupBlob.userRating.ratingCountCurrentVersion", name=indexName)
 
-def setupMetaRankingIndex(indexName):
+def setupRatingCurrentVersion(indexName):
+    mongo.collection_games.create_index("searchBlob.averageUserRatingForCurrentVersion", name=indexName)
+
+def setupReleaseDate(indexName):
+    mongo.collection_games.create_index("searchBlob.releaseDate", name=indexName)
+
+def setupCurrentVersionReleaseDate(indexName):
+    mongo.collection_games.create_index("searchBlob.currentVersionReleaseDate", name=indexName)
+
+def setupDevice(indexName):
+    mongo.collection_games.create_index("lookupBlob.deviceFamilies", name=indexName)
+
+# def setupPriceIndex(indexName):
+#     mongo.collection_games.create_index("searchBlob.price", name=indexName)
+
+def setupMetaRanking(indexName):
     mongo.collection_games.create_index("metaRanking", name=indexName)
 
 if __name__ == '__main__':
@@ -58,12 +64,13 @@ if __name__ == '__main__':
     indexNames = settings.mongo.indexNames.games
     creationFuncs = [
         (indexNames.text, setupTextIndexes),
-        (indexNames.deviceFamilies, setupDeviceIndex),
-        (indexNames.releaseDate, setupReleaseDateIndex),
-        (indexNames.price, setupPriceIndex),
-        (indexNames.popularity, setupPopularityIndex),
-        (indexNames.rating, setupRatingIndex),
-        (indexNames.metaRanking, setupMetaRankingIndex),
+        (indexNames.deviceFamilies, setupDevice),
+        (indexNames.releaseDate, setupReleaseDate),
+        (indexNames.currentVersionReleaseDate, setupCurrentVersionReleaseDate),
+        # (indexNames.price, setupPriceIndex),
+        (indexNames.popularity, setupPopularity),
+        (indexNames.ratingCountCurrentVersion, setupRatingCountCurrentVersion),
+        (indexNames.metaRanking, setupMetaRanking),
     ]
 
     indexes = mongo.collection_games.index_information()
@@ -71,7 +78,7 @@ if __name__ == '__main__':
     # # delete all indexes
     # for func in creationFuncs:
     #     if func[0] in indexes.keys():
-    #         logger.log("Deleting index: " + func[0])
+    #         mongo.logger.log("Deleting index: " + func[0])
     #         mongo.collection_games.drop_index(func[0])
 
     ## create all indexes if they don't already exist
