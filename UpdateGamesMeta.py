@@ -18,8 +18,8 @@ class UpdateGamesMeta:
         self.mongo = mongo
 
     def start(self):
-        # self.updateTagsRecord()
-        # self.updatePopularityIntervals()
+        self.updateTagsRecord()
+        self.updatePopularityIntervals()
         self.updateReleaseYears()
 
     def sortFunc(self, tagPairA, tagPairB):
